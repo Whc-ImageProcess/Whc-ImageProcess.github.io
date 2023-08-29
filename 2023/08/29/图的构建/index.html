@@ -1,0 +1,734 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="../../../../img/fluid.png">
+  <link rel="icon" href="../../../../img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="WHC">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="图的构建图的构建 graph.hpp 1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950515253545556575859606162636465666768697071727374757677787980818283848586878889909192939495">
+<meta property="og:type" content="article">
+<meta property="og:title" content="图的构建">
+<meta property="og:url" content="http://example.com/2023/08/29/%E5%9B%BE%E7%9A%84%E6%9E%84%E5%BB%BA/index.html">
+<meta property="og:site_name" content="WHC2Enable">
+<meta property="og:description" content="图的构建图的构建 graph.hpp 1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950515253545556575859606162636465666768697071727374757677787980818283848586878889909192939495">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2023-08-29T06:38:27.000Z">
+<meta property="article:modified_time" content="2023-08-29T09:46:32.869Z">
+<meta property="article:author" content="WHC">
+<meta property="article:tag" content="图的构建">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>图的构建 - WHC2Enable</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="../../../../css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="../../../../css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="../../../../css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.5","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"23sq65MU7rrVFz0XjoKRZuMM-gzGzoHsz","app_key":"5J5wrPRqIyjTgcZsPvLLlfvc","server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="../../../../js/utils.js" ></script>
+  <script  src="../../../../js/color-schema.js" ></script>
+  
+
+  
+
+  
+    <!-- Google tag (gtag.js) -->
+    <script async>
+      if (!Fluid.ctx.dnt) {
+        Fluid.utils.createScript("https://www.googletagmanager.com/gtag/js?id=", function() {
+          window.dataLayer = window.dataLayer || [];
+          function gtag() {
+            dataLayer.push(arguments);
+          }
+          gtag('js', new Date());
+          gtag('config', '');
+        });
+      }
+    </script>
+  
+
+  
+
+  
+
+  
+
+  
+    
+  
+
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="../../../../index.html">
+      <strong>WHC2Enable BLOG</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="../../../../index.html">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="../../../../archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="../../../../categories/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="../../../../tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="../../../../about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('../../../../img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="图的构建"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2023-08-29 14:38" pubdate>
+          2023年8月29日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          4.5k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          38 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="leancloud-page-views-container" class="post-meta" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="leancloud-page-views"></span> 次
+        </span>
+        
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">图的构建</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="图的构建"><a href="#图的构建" class="headerlink" title="图的构建"></a>图的构建</h1><p>图的构建</p>
+<p><code>graph.hpp</code></p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;unordered_map&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;unordered_set&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;memory&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;vector&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;set&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;queue&gt;</span></span><br><span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;<br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">Edge</span>;<br><span class="hljs-keyword">class</span> <span class="hljs-title class_">Node</span><br>&#123;<br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-type">int</span> value;<br>    <span class="hljs-comment">// in表示一个点的入度，表示有多少个有向边的箭头指向它</span><br>    <span class="hljs-type">unsigned</span> <span class="hljs-type">int</span> in;<br>    <span class="hljs-comment">// out表示一个点的出度，表示有多少个边是从这个点指向外面的</span><br>    <span class="hljs-type">unsigned</span> <span class="hljs-type">int</span> out;<br>    vector&lt;Node*&gt; nexts;<br>    vector&lt;Edge*&gt; edges;<br><br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-built_in">Node</span>(<span class="hljs-type">int</span> val)<br>    &#123;<br>        <span class="hljs-keyword">this</span>-&gt;value = val;<br>        in = <span class="hljs-number">0</span>;<br>        out = <span class="hljs-number">0</span>;<br>        nexts = <span class="hljs-built_in">vector</span>&lt;Node*&gt;();<br>        edges = <span class="hljs-built_in">vector</span>&lt;Edge*&gt;();<br>    &#125;<br>    ~<span class="hljs-built_in">Node</span>()<br>    &#123;<br>        nexts.<span class="hljs-built_in">clear</span>();<br>        edges.<span class="hljs-built_in">clear</span>();<br>    &#125;<br>&#125;;<br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">Edge</span><br>&#123;<br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-type">int</span> weight;<br>    Node* from;<br>    Node* to;<br>    <span class="hljs-built_in">Edge</span>(<span class="hljs-type">int</span> wei, Node* f, Node* t)<br>    &#123;<br>        <span class="hljs-keyword">this</span>-&gt;weight = wei;<br>        <span class="hljs-keyword">this</span>-&gt;from = f;<br>        <span class="hljs-keyword">this</span>-&gt;to = t;<br>    &#125;<br>    <span class="hljs-built_in">Edge</span>(Node* f, Node* t)<br>    &#123;<br>        <span class="hljs-keyword">this</span>-&gt;from = f;<br>        <span class="hljs-keyword">this</span>-&gt;to = t;<br>    &#125;<br>    ~<span class="hljs-built_in">Edge</span>()<br>    &#123;<br>    &#125;<br>&#125;;<br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">Graph</span><br>&#123;<br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-comment">// 把所有的点集和边集合都委托给Graph结构来管理</span><br>    unordered_map&lt;<span class="hljs-type">int</span>, shared_ptr&lt;Node&gt;&gt; nodes;<br>    unordered_set&lt;shared_ptr&lt;Edge&gt;&gt; edges;<br>    <span class="hljs-built_in">Graph</span>()<br>    &#123;<br>        nodes = unordered_map&lt;<span class="hljs-type">int</span>, shared_ptr&lt;Node&gt;&gt;();<br>        edges = unordered_set&lt;shared_ptr&lt;Edge&gt;&gt;();<br>    &#125;<br>    ~<span class="hljs-built_in">Graph</span>()<br>    &#123;<br>        nodes.<span class="hljs-built_in">clear</span>();<br>        edges.<span class="hljs-built_in">clear</span>();<br>    &#125;<br>&#125;;<br><br><span class="hljs-comment">// matrix 每一行表示图中的边</span><br><span class="hljs-comment">// 必须为N*3的矩阵</span><br><span class="hljs-comment">// [weight, fromNode, toNode]</span><br><span class="hljs-function">std::shared_ptr&lt;Graph&gt; <span class="hljs-title">creatGraph</span><span class="hljs-params">(vector&lt;vector&lt;<span class="hljs-type">int</span>&gt;&gt;&amp; matrix)</span></span><br><span class="hljs-function"></span>&#123;<br>    <span class="hljs-comment">// shared_ptr&lt;Graph&gt; graph = make_shared&lt;Graph&gt;(Graph());</span><br>    shared_ptr&lt;Graph&gt; graph = <span class="hljs-built_in">shared_ptr</span>&lt;Graph&gt;(<span class="hljs-keyword">new</span> <span class="hljs-built_in">Graph</span>());<br>    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; matrix.<span class="hljs-built_in">size</span>(); i++)<br>    &#123;<br>        <span class="hljs-type">int</span> weight = matrix[i][<span class="hljs-number">0</span>];<br>        <span class="hljs-type">int</span> from = matrix[i][<span class="hljs-number">1</span>];<br>        <span class="hljs-type">int</span> to = matrix[i][<span class="hljs-number">2</span>];<br>        <span class="hljs-keyword">if</span> (graph.<span class="hljs-built_in">get</span>()-&gt;nodes.<span class="hljs-built_in">find</span>(from) == graph.<span class="hljs-built_in">get</span>()-&gt;nodes.<span class="hljs-built_in">end</span>())<br>        &#123;<br>            graph.<span class="hljs-built_in">get</span>()-&gt;nodes[from] = <span class="hljs-built_in">shared_ptr</span>&lt;Node&gt;(<span class="hljs-keyword">new</span> <span class="hljs-built_in">Node</span>(from));<br>        &#125;<br>        <span class="hljs-keyword">if</span> (graph.<span class="hljs-built_in">get</span>()-&gt;nodes.<span class="hljs-built_in">find</span>(to) == graph.<span class="hljs-built_in">get</span>()-&gt;nodes.<span class="hljs-built_in">end</span>())<br>        &#123;<br>            graph.<span class="hljs-built_in">get</span>()-&gt;nodes[to] = <span class="hljs-built_in">shared_ptr</span>&lt;Node&gt;(<span class="hljs-keyword">new</span> <span class="hljs-built_in">Node</span>(to));<br>        &#125;<br>        Node* fromNode = graph.<span class="hljs-built_in">get</span>()-&gt;nodes[from].<span class="hljs-built_in">get</span>();<br>        Node* toNode = graph.<span class="hljs-built_in">get</span>()-&gt;nodes[to].<span class="hljs-built_in">get</span>();<br>        shared_ptr&lt;Edge&gt; newEdge = <span class="hljs-built_in">shared_ptr</span>&lt;Edge&gt;(<span class="hljs-keyword">new</span> <span class="hljs-built_in">Edge</span>(weight, fromNode, toNode));<br>        fromNode-&gt;nexts.<span class="hljs-built_in">emplace_back</span>(toNode);<br>        fromNode-&gt;out++;<br>        toNode-&gt;in++;<br>        fromNode-&gt;edges.<span class="hljs-built_in">emplace_back</span>(newEdge.<span class="hljs-built_in">get</span>());<br>        graph.<span class="hljs-built_in">get</span>()-&gt;edges.<span class="hljs-built_in">insert</span>(newEdge);<br>    &#125;<br>    <span class="hljs-comment">// new int(1);</span><br>    <span class="hljs-comment">// 0 内存泄漏！！！</span><br>    <span class="hljs-keyword">return</span> graph;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h2 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h2><p><code>testGraph.cpp</code></p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;graph.hpp&quot;</span></span><br><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;stdlib.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;crtdbg.h&gt;</span></span><br><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span><br><span class="hljs-function"></span>&#123;<br>    vector&lt;vector&lt;<span class="hljs-type">int</span>&gt;&gt; matrix = &#123; &#123;<span class="hljs-number">3</span>, <span class="hljs-number">0</span>, <span class="hljs-number">2</span>&#125;, &#123;<span class="hljs-number">7</span>, <span class="hljs-number">1</span>, <span class="hljs-number">2</span>&#125; &#125;;<br>    shared_ptr&lt;Graph&gt; graph = <span class="hljs-built_in">creatGraph</span>(matrix);<br>    cout &lt;&lt; graph.<span class="hljs-built_in">get</span>()-&gt;nodes[<span class="hljs-number">1</span>].<span class="hljs-built_in">use_count</span>() &lt;&lt; endl;<br><br>    graph.<span class="hljs-built_in">reset</span>();<br><br>    cout &lt;&lt; graph.<span class="hljs-built_in">get</span>()-&gt;nodes[<span class="hljs-number">1</span>].<span class="hljs-built_in">use_count</span>() &lt;&lt; endl;<br><br>    _CrtDumpMemoryLeaks();	<span class="hljs-comment">//检测内存泄露</span><br><br>    <span class="hljs-built_in">system</span>(<span class="hljs-string">&quot;pause&quot;</span>);<br>    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h1 id="graph"><a href="#graph" class="headerlink" title="graph"></a>graph</h1><h2 id="shared-ptr"><a href="#shared-ptr" class="headerlink" title="shared_ptr"></a>shared_ptr</h2><p>使用 shared_ptr 可以避免许多内存泄漏的情况，但不是所有情况都能解决。shared_ptr 依赖于引用计数技术，它会记录指向对象的指针数量，当数量为 0 时自动删除对象。但是，在某些情况下仍然可能发生内存泄漏。以下是可能会导致内存泄漏的情况：</p>
+<p>循环引用。如果你的对象存在循环引用，即使你使用 shared_ptr，也可能会发生内存泄漏。例如，如果对象A中包含一个 std::shared_ptr&lt;B&gt;，而对象B中包含一个 std::shared_ptr&lt;A&gt;，那么当你删除对象A和B时，它们之间互相持有的指针数量永远不会变成 0，从而导致内存泄漏。</p>
+<p>基类和派生类之间的显式指针。如果你使用了基类和派生类之间的显式指针，可能会导致内存泄漏，因为引用计数技术无法追踪这些指针。例如，如果你使用了一个 std::shared_ptr&lt;A&gt;，并将其指向了派生类B的实例，那么当你删除该 shared_ptr 时，B 对象中的成员变量仍然可能包含指向 A 对象的指针，从而导致内存泄漏。</p>
+<p>自定义删除器。 如果你使用 shared_ptr 自定义了删除器，那么你需要确保你的删除器适当地清理了指针持有的资源。否则，你可能会在删除对象时发生内存泄漏。</p>
+<p>shared_ptr 和 new[] 的组合。 如果你使用了 std::shared_ptr 来管理一个使用 new[] 分配的数组，你需要使用 std::shared_ptr 提供的定制删除器，以避免内存泄漏。原因是 std::shared_ptr 并不知道它指向的是一个数组，而 delete 只能删除由 new 分配的单个对象。</p>
+<p>总之，虽然 std::shared_ptr 可以减少内存泄漏的情况，但并不能完全避免。你需要注意以避免上述情况，从而减少内存泄漏的发生。如果你使用 _CrtDumpMemoryLeaks 或其他工具来检测内存泄漏，你应该注意该工具是否对 std::shared_ptr 的使用进行了正确的跟踪。</p>
+<h2 id="CrtDumpMemoryLeaks"><a href="#CrtDumpMemoryLeaks" class="headerlink" title="_CrtDumpMemoryLeaks"></a>_CrtDumpMemoryLeaks</h2><p>_CrtDumpMemoryLeaks 是 VC++ 提供用于检测内存泄漏的函数，它是定义在 crtdbg.h 头文件中的。</p>
+<p>在 C&#x2F;C++ 语言开发中，内存泄漏是一种很严重的问题。某些情况下，程序员开发的代码中申请了内存空间但没有释放，导致内存泄漏的情况出现。内存泄漏会导致程序运行变慢，有时还会引发崩溃、卡死等问题。</p>
+<p>为了及时发现和解决内存泄漏问题，可以使用 _CrtDumpMemoryLeaks 函数来检测有没有内存泄漏。使用该函数时，需要包含 crtdbg.h 头文件，并将_CRTDBG_LEAK_CHECK_DF 宏设置为 _CrtSetDbgFlag 函数的参数，然后程序运行结束后就会在调试输出中显示内存泄漏的信息。如下所示：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-meta">#<span class="hljs-keyword">define</span> _CRTDBG_MAP_ALLOC</span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;stdlib.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;crtdbg.h&gt;</span></span><br><br><span class="hljs-type">int</span> <span class="hljs-title function_">main</span><span class="hljs-params">()</span><br>&#123;<br>    _CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);<br>    <span class="hljs-comment">// do something</span><br>    _CrtDumpMemoryLeaks();<br>    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h2 id="最小生成树"><a href="#最小生成树" class="headerlink" title="最小生成树"></a>最小生成树</h2><p>k算法和p算法都是仅仅针对无向图的算法</p>
+<h3 id="kruskal-算法"><a href="#kruskal-算法" class="headerlink" title="kruskal 算法"></a>kruskal 算法</h3><p>算法思想和证明方式</p>
+<p>k算法：每次选择权值最小的边，如果不存在环，则收集。否者进入下一次循环选择权值最小的边。直到所有的边都遍历过一遍。 那么如果判断是否存在环，用并集技巧。</p>
+<h3 id="prim-算法"><a href="#prim-算法" class="headerlink" title="prim 算法"></a>prim 算法</h3><p>K算法可能有一个集合被吞入另一个集合的情况，谁被吞不确定，但P算法只有一个大集合</p>
+<p>就是k算法可能有一个一个点往集合里加的情况，也可能有一片一片的加的情况</p>
+<h2 id="Dijkstra"><a href="#Dijkstra" class="headerlink" title="Dijkstra"></a>Dijkstra</h2><p>从规定的出发节点到所有节点的最短路径</p>
+<p>适用范围：不能有累加和为负数的环</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="../../../../categories/%E7%AE%97%E6%B3%95/" class="category-chain-item">算法</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="../../../../tags/%E5%9B%BE%E7%9A%84%E6%9E%84%E5%BB%BA/" class="print-no-link">#图的构建</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>图的构建</div>
+      <div>http://example.com/2023/08/29/图的构建/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>WHC</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2023年8月29日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="../%E5%B9%BF%E5%BA%A6%E4%BC%98%E5%85%88%E6%90%9C%E7%B4%A2/" title="广度优先搜索">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">广度优先搜索</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="../%E4%B8%AA%E4%BA%BA%E9%A1%B9%E7%9B%AE/" title="个人项目">
+                        <span class="hidden-mobile">个人项目</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="leancloud-site-pv-container" style="display: none">
+        总访问量 
+        <span id="leancloud-site-pv"></span>
+         次
+      </span>
+    
+    
+      <span id="leancloud-site-uv-container" style="display: none">
+        总访客数 
+        <span id="leancloud-site-uv"></span>
+         人
+      </span>
+    
+    
+
+  
+</div>
+
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="../../../../js/events.js" ></script>
+<script  src="../../../../js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="../../../../js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script defer src="../../../../js/leancloud.js" ></script>
+
+  <script  src="../../../../js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="../../../../js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
