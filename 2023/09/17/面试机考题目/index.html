@@ -23,14 +23,15 @@
 <meta property="og:site_name" content="WHC2Enable">
 <meta property="og:description" content="判断那些会编译报错，阐述原因12345678const char *a &#x3D; NULL;&#x2F;&#x2F; error: invalid conversion from &amp;#x27;const char*&amp;#x27; to &amp;#x27;char*&amp;#x27; [-fpermissive]&#x2F;&#x2F; char *const b &#x3D; a;&#x2F;&#x2F; warning: ISO C++ forbids converting a st">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/2023/09/17/%E9%9D%A2%E8%AF%95%E6%9C%BA%E8%80%83%E9%A2%98%E7%9B%AE/fork2.png">
 <meta property="og:image" content="http://example.com/2023/09/17/%E9%9D%A2%E8%AF%95%E6%9C%BA%E8%80%83%E9%A2%98%E7%9B%AE/fork.png">
 <meta property="og:image" content="http://example.com/2023/09/17/%E9%9D%A2%E8%AF%95%E6%9C%BA%E8%80%83%E9%A2%98%E7%9B%AE/fork2.png">
 <meta property="article:published_time" content="2023-09-17T05:49:38.000Z">
-<meta property="article:modified_time" content="2023-09-22T02:30:50.576Z">
+<meta property="article:modified_time" content="2023-09-23T06:35:32.002Z">
 <meta property="article:author" content="WHC">
 <meta property="article:tag" content="cpp">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="http://example.com/2023/09/17/%E9%9D%A2%E8%AF%95%E6%9C%BA%E8%80%83%E9%A2%98%E7%9B%AE/fork.png">
+<meta name="twitter:image" content="http://example.com/2023/09/17/%E9%9D%A2%E8%AF%95%E6%9C%BA%E8%80%83%E9%A2%98%E7%9B%AE/fork2.png">
   
   
   
@@ -263,7 +264,7 @@
         
         
         
-          118 分钟
+          121 分钟
         
       </span>
     
@@ -374,6 +375,9 @@
 <p>甲:5    0<br>乙:4    3   0<br>丙:3    2   1   0<br>丁:2    1   0   0<br>戊:1    0   0   0<br>己:x    x-1 x-2 x-3</p>
 <p>5+3+1&#x3D;9</p>
 <p>所以现在已经进行了<code>9</code>场比赛</p>
+<h2 id="在没有秒表统计的前提下，如果要从25马中选出跑得最快的3匹，每次只能有5匹马同时跑，最少要比赛多少次，才能确保得出结果-请给出推演过程，直接给出答案的不得分。"><a href="#在没有秒表统计的前提下，如果要从25马中选出跑得最快的3匹，每次只能有5匹马同时跑，最少要比赛多少次，才能确保得出结果-请给出推演过程，直接给出答案的不得分。" class="headerlink" title="在没有秒表统计的前提下，如果要从25马中选出跑得最快的3匹，每次只能有5匹马同时跑，最少要比赛多少次，才能确保得出结果? (请给出推演过程，直接给出答案的不得分。)"></a>在没有秒表统计的前提下，如果要从25马中选出跑得最快的3匹，每次只能有5匹马同时跑，最少要比赛多少次，才能确保得出结果? (请给出推演过程，直接给出答案的不得分。)</h2><p>25匹马看成25个点，每次比赛在参赛的5匹马之间引入4条有向边，1-&gt;2-&gt;3-&gt;4-&gt;5，数字表示参赛马的成绩排名。这样最后能形成一个有向无环图, 我们需要得到的是前三名的节点a, b, c, 其中a-&gt;b-&gt;c, 并且c是剩余节点的祖先。六次比赛（分5组各自比赛，之后后每组的第一名比赛）之后，所有的节点已经连成了一个二叉堆，根节点是第一名。只需要让左右子堆的顶点和它们的子节点一起再比一次，就能决出2，3名。</p>
+<p><img src="fork2.png" srcset="/img/loading.gif" lazyload alt="赛马比赛"></p>
+<h2 id="xy，mn各表示一个两位数，若xy-mn-119，则x-y-m-n"><a href="#xy，mn各表示一个两位数，若xy-mn-119，则x-y-m-n" class="headerlink" title="xy，mn各表示一个两位数，若xy+mn&#x3D;119，则x+y+m+n&#x3D;"></a>xy，mn各表示一个两位数，若xy+mn&#x3D;119，则x+y+m+n&#x3D;</h2><p>20</p>
 <h2 id="分析下面这段代码的运行结果"><a href="#分析下面这段代码的运行结果" class="headerlink" title="分析下面这段代码的运行结果"></a>分析下面这段代码的运行结果</h2><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span><br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">Base</span><br>&#123;<br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-function"><span class="hljs-keyword">virtual</span> <span class="hljs-type">void</span> <span class="hljs-title">method</span><span class="hljs-params">()</span> </span>&#123; std::cout &lt;&lt; <span class="hljs-string">&quot;from Base&quot;</span> &lt;&lt; std::endl; &#125;<br>    <span class="hljs-comment">// 这里如果不加 virtual 修饰的话，就会导致 delete base 只调用了基类的析构函数</span><br>    <span class="hljs-comment">// 而没有调用子类的析构函数，导致资源释放不彻底</span><br>    <span class="hljs-keyword">virtual</span> ~<span class="hljs-built_in">Base</span>() &#123; <span class="hljs-built_in">method</span>(); &#125;<br>    <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">baseMethod</span><span class="hljs-params">()</span> </span>&#123; <span class="hljs-built_in">method</span>(); &#125;<br>&#125;;<br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">A</span> : <span class="hljs-keyword">public</span> Base<br>&#123;<br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-built_in">A</span>() &#123; std::cout &lt;&lt; <span class="hljs-string">&quot;construct A&quot;</span> &lt;&lt; std::endl; &#125;<br>    <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">method</span><span class="hljs-params">()</span> <span class="hljs-keyword">override</span> </span>&#123; std::cout &lt;&lt; <span class="hljs-string">&quot;from A&quot;</span> &lt;&lt; std::endl; &#125;<br>    ~<span class="hljs-built_in">A</span>() &#123; <span class="hljs-built_in">method</span>(); &#125;<br>&#125;;<br><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span><br><span class="hljs-function"></span>&#123;<br>    Base *base = <span class="hljs-keyword">new</span> A;<br>    <span class="hljs-comment">// base-&gt;baseMethod();</span><br><br>    <span class="hljs-keyword">delete</span> base;<br><br>    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
 
 <h2 id="关于linux内存空间"><a href="#关于linux内存空间" class="headerlink" title="关于linux内存空间"></a>关于linux内存空间</h2><p>A、内核空间和用户空间都属于虚拟内存空间：<br>在现代操作系统中，使用虚拟内存的概念将内存空间划分为内核空间和用户空间。虚拟内存使得每个进程都有自己独立的地址空间，从而提供了更高的安全性和隔离性。内核空间是保留给操作系统内核使用的区域，包含了操作系统的代码和数据结构。用户空间是给应用程序和用户代码使用的区域。</p>
