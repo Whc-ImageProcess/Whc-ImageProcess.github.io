@@ -24,7 +24,7 @@
 <meta property="og:description" content="Linux中异常和软中断的区别在Linux中，异常（Exception）和软中断（Soft Interrupt）是两种不同类型的中断机制。它们具有以下区别：  引发条件：  异常：异常是由CPU在执行指令过程中遇到错误或异常情况时触发的。例如，访问非法内存地址、除零错误等。软中断：软中断是由软件编程请求触发的中断。程序员可以通过系统调用或软中断指令（如INT指令）在用户空间向内核发起软中断。  处">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2023-08-13T08:42:43.000Z">
-<meta property="article:modified_time" content="2023-10-02T14:17:31.007Z">
+<meta property="article:modified_time" content="2023-10-05T06:29:29.701Z">
 <meta property="article:author" content="WHC">
 <meta property="article:tag" content="嵌入式">
 <meta name="twitter:card" content="summary_large_image">
@@ -466,7 +466,7 @@
 <p>通过使用DMA，数据传输可以在不占用中央处理器过多时间的情况下进行，从而提高整个系统的效率。DMA技术广泛应用于许多设备之间的数据传输，如硬盘传输、图形卡传输等，以提高数据传输的速度和效率。</p>
 <h2 id="总线地址、物理地址、虚拟地址的区别是什么"><a href="#总线地址、物理地址、虚拟地址的区别是什么" class="headerlink" title="总线地址、物理地址、虚拟地址的区别是什么?"></a>总线地址、物理地址、虚拟地址的区别是什么?</h2><p>总线地址、物理地址和虚拟地址是三种不同的地址概念。</p>
 <ol>
-<li><p>总线地址（Bus Address)：指的是设备直接访问主存时使用的地址，也称为物理地址（Physical Address）。这个地址是硬件直接使用的，通常可以看作一个机器的绝对内存地址。在总线上传输的都是总线地址。</p>
+<li><p>总线地址(Bus Address)：指的是设备直接访问主存时使用的地址，也称为物理地址（Physical Address）。这个地址是硬件直接使用的，通常可以看作一个机器的绝对内存地址。在总线上传输的都是总线地址。</p>
 </li>
 <li><p>物理地址（Physical Address）：指的是内存中实际的地址，用来寻址系统中的物理内存。当CPU需要读取或写入内存时，就会将逻辑地址转换为物理地址。物理地址是常规的、实际的内存地址，是由硬件（如MMU）负责生成的，与CPU的处理器相关。</p>
 </li>
@@ -530,14 +530,15 @@
 </li>
 </ol>
 <p>除了上述列举的几类外，还有一些特殊的设备驱动程序，如声卡驱动程序、蓝牙驱动程序、输入设备驱动程序等。这些驱动程序都有各自的特定功能，都是 Linux 系统中不可缺少的一部分。</p>
-<h2 id="通过宏定义实现一个32bit数据的大小端转换"><a href="#通过宏定义实现一个32bit数据的大小端转换" class="headerlink" title="通过宏定义实现一个32bit数据的大小端转换"></a>通过宏定义实现一个32bit数据的大小端转换</h2><p>#define SWAP_32BII(x) (((x)&amp;0xFF000000) &gt;&gt; 24) | (((x)&amp;0x00FF0000) &gt;&gt; 8) | (((x)&amp;0x0000FF00) &lt;&lt; 8) | (((x)&amp;0x000000FF) &lt;&lt; 24)</p>
+<h2 id="通过宏定义实现一个32bit数据的大小端转换"><a href="#通过宏定义实现一个32bit数据的大小端转换" class="headerlink" title="通过宏定义实现一个32bit数据的大小端转换"></a>通过宏定义实现一个32bit数据的大小端转换</h2><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-meta">#<span class="hljs-keyword">define</span> SWAP_32BII(x) (((x)&amp;0xFF000000) &gt;&gt; 24) | (((x)&amp;0x00FF0000) &gt;&gt; 8) | (((x)&amp;0x0000FF00) &lt;&lt; 8) | (((x)&amp;0x000000FF) &lt;&lt; 24)</span><br></code></pre></td></tr></table></figure>
+
 <h2 id="操作系统通过何种数据结构维护进程-通过哪些算法调度进程"><a href="#操作系统通过何种数据结构维护进程-通过哪些算法调度进程" class="headerlink" title="操作系统通过何种数据结构维护进程?通过哪些算法调度进程?"></a>操作系统通过何种数据结构维护进程?通过哪些算法调度进程?</h2><p>操作系统通过进程控制块（Process Control Block，PCB）数据结构来维护进程。每个正在运行或等待执行的进程都有一个对应的PCB。</p>
 <p>PCB是一个包含了关于进程信息的数据结构，用于操作系统管理和控制进程的执行。它通常包含以下信息：</p>
 <ol>
 <li>进程标识符（Process ID，PID）：唯一标识一个进程的数字。</li>
 <li>程序计数器（Program Counter，PC）：记录了当前进程下一条要执行的指令的内存地址。</li>
 <li>寄存器集合：保存了当前进程的寄存器状态，包括通用寄存器、程序状态字等。</li>
-<li>进程状态：记录了进程的当前状态，例如运行、就绪、阻塞等。</li>
+<li>进程状态：记录了进程的当前状态，例如新建、运行、就绪、阻塞、终止等。</li>
 <li>内存管理信息：包括进程的内存分配情况、页表或段表等。</li>
 <li>资源占用情况：记录了进程所占用的资源，如文件描述符、打开的文件列表、分配的内存等。</li>
 <li>作业属性：包括进程的优先级、调度参数等。</li>
