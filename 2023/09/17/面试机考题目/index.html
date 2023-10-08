@@ -27,7 +27,7 @@
 <meta property="og:image" content="http://example.com/2023/09/17/%E9%9D%A2%E8%AF%95%E6%9C%BA%E8%80%83%E9%A2%98%E7%9B%AE/fork.png">
 <meta property="og:image" content="http://example.com/2023/09/17/%E9%9D%A2%E8%AF%95%E6%9C%BA%E8%80%83%E9%A2%98%E7%9B%AE/fork2.png">
 <meta property="article:published_time" content="2023-09-17T05:49:38.000Z">
-<meta property="article:modified_time" content="2023-10-05T08:18:05.654Z">
+<meta property="article:modified_time" content="2023-10-07T06:25:51.077Z">
 <meta property="article:author" content="WHC">
 <meta property="article:tag" content="cpp">
 <meta name="twitter:card" content="summary_large_image">
@@ -253,7 +253,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          17k 字
+          19k 字
         
       </span>
     
@@ -264,7 +264,7 @@
         
         
         
-          144 分钟
+          162 分钟
         
       </span>
     
@@ -538,6 +538,16 @@
 </li>
 </ol>
 <p>综上所述，new&#x2F;delete和malloc&#x2F;free在功能和用法上有一些区别，尤其是对于C++中的对象分配和释放，建议使用new和delete来确保类型安全和正确的构造&#x2F;析构行为。</p>
+<h2 id="volatile"><a href="#volatile" class="headerlink" title="volatile"></a>volatile</h2><p>禁止编译器优化：编译器在优化代码时，会假设变量的值在没有被修改的情况下是不会改变的，从而进行一些优化措施，如寄存器缓存、指令重排等。然而，在某些特定的应用场景中，变量的值可能会被其他线程、中断处理程序或硬件设备修改，这时候编译器的优化可能会导致错误的结果。通过使用 volatile 关键字，可以告诉编译器不要对该变量进行优化，保证读写操作的顺序，并始终从内存中读取变量的最新值。</p>
+<p>以下是一些常见的情况下会使用 volatile 的例子：</p>
+<ol>
+<li><p>多线程编程：在多线程环境下，多个线程可能会同时访问同一份数据。如果这些线程之间不通过锁或其他同步机制同步访问，那么就会出现数据竞争的问题。此时，可以使用 volatile 来保证数据的可见性和读写顺序，并防止编译器对变量的优化。</p>
+</li>
+<li><p>中断处理程序：中断处理程序会在计算机硬件设备发生某些事件时被触发。在中断处理程序中，可能需要读写一些寄存器或内存地址来响应事件。由于中断处理程序和正常程序运行在不同的上下文中，因此需要使用 volatile 关键字来保证对这些变量的读写操作是可见的并且执行顺序符合预期。</p>
+</li>
+<li><p>访问硬件设备：在与硬件设备通信时，需要使用 volatile 来保证对寄存器或内存地址的读写操作是正确的，并且能够及时更新变量的值。否则，编译器可能会对变量的读写进行优化，从而导致通信错误。</p>
+</li>
+</ol>
 <h2 id="判断-ABCD-的析构顺序"><a href="#判断-ABCD-的析构顺序" class="headerlink" title="判断 ABCD 的析构顺序"></a>判断 ABCD 的析构顺序</h2><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;vector&gt;</span></span><br><span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;<br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">A</span><br>&#123;<br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-built_in">A</span>(<span class="hljs-comment">/* args */</span>)&#123;&#125;;<br>    ~<span class="hljs-built_in">A</span>() &#123; cout &lt;&lt; <span class="hljs-string">&quot;A des&quot;</span> &lt;&lt; endl; &#125;;<br>&#125;;<br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">B</span><br>&#123;<br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-built_in">B</span>(<span class="hljs-comment">/* args */</span>)&#123;&#125;;<br>    ~<span class="hljs-built_in">B</span>() &#123; cout &lt;&lt; <span class="hljs-string">&quot;B des&quot;</span> &lt;&lt; endl; &#125;;<br>&#125;;<br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">C</span><br>&#123;<br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-built_in">C</span>(<span class="hljs-comment">/* args */</span>)&#123;&#125;;<br>    ~<span class="hljs-built_in">C</span>() &#123; cout &lt;&lt; <span class="hljs-string">&quot;C des&quot;</span> &lt;&lt; endl; &#125;;<br>&#125;;<br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">D</span><br>&#123;<br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-built_in">D</span>(<span class="hljs-comment">/* args */</span>)&#123;&#125;;<br>    ~<span class="hljs-built_in">D</span>() &#123; cout &lt;&lt; <span class="hljs-string">&quot;D des&quot;</span> &lt;&lt; endl; &#125;;<br>&#125;;<br><br>C c;<br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span><br><span class="hljs-function"></span>&#123;<br>    A *pa = <span class="hljs-keyword">new</span> <span class="hljs-built_in">A</span>();<br>    B b;<br>    <span class="hljs-type">static</span> D d;<br>    <span class="hljs-keyword">delete</span> pa;<br>    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
 
 <p>析构顺序为 ABDC</p>
@@ -626,7 +636,57 @@
 <li>放入桶中：[9, 15, 23, 48. 50, 62, 66, 70, 82, 99], [128, 136]</li>
 </ul>
 <p>最终，数组S被排列成升序序列如下：<br>[9, 15, 23, 48, 50, 62, 66, 70, 82, 99, 128, 136]</p>
-<h2 id="在表达式6＋5-3-2＋1-9中，使用栈对表达式进行求值的过程中，当扫描到1时，其对象栈为"><a href="#在表达式6＋5-3-2＋1-9中，使用栈对表达式进行求值的过程中，当扫描到1时，其对象栈为" class="headerlink" title="在表达式6＋5*(3*2＋1)-9中，使用栈对表达式进行求值的过程中，当扫描到1时，其对象栈为()"></a>在表达式6＋5*(3*2＋1)-9中，使用栈对表达式进行求值的过程中，当扫描到1时，其对象栈为()</h2>
+<h2 id="在表达式6＋5-3-2＋1-9中，使用栈对表达式进行求值的过程中，当扫描到1时，其对象栈为"><a href="#在表达式6＋5-3-2＋1-9中，使用栈对表达式进行求值的过程中，当扫描到1时，其对象栈为" class="headerlink" title="在表达式6＋5*(3*2＋1)-9中，使用栈对表达式进行求值的过程中，当扫描到1时，其对象栈为()"></a>在表达式6＋5*(3*2＋1)-9中，使用栈对表达式进行求值的过程中，当扫描到1时，其对象栈为()</h2><p>6 5 6</p>
+<h2 id="介绍一下红黑树"><a href="#介绍一下红黑树" class="headerlink" title="介绍一下红黑树"></a>介绍一下红黑树</h2><p>红黑树（Red-Black Tree）是一种自平衡的二叉搜索树，它在保持二叉搜索树特性的同时，通过引入颜色标记和一些性质约束来保持树的平衡。红黑树具有以下特点：</p>
+<ol>
+<li>节点的颜色：每个节点被标记为红色或黑色。</li>
+<li>根节点的颜色：根节点为黑色。</li>
+<li>叶子节点的颜色：叶子节点（NIL节点或空节点）被视为黑色。</li>
+<li>红黑性质：<ul>
+<li>任何红色节点的两个子节点都是黑色。</li>
+<li>从任一节点到其每个叶子的所有路径都包含相同数目的黑色节点（即具有相同的黑色高度）。</li>
+</ul>
+</li>
+</ol>
+<p>通过以上性质，红黑树保证了树的高度近似平衡，最长路径不超过最短路径的两倍。这使得红黑树在插入、删除和查找等操作上具有较好的性能，时间复杂度为O(log n)。</p>
+<p>红黑树的操作主要包括插入、删除和查找。插入和删除操作需要进行调整来保持红黑性质，并维护树的平衡。</p>
+<p>红黑树的插入操作通过旋转和重新着色来进行调整。具体来说，插入一个新节点后，可能会破坏红黑性质，需要进行以下调整步骤：</p>
+<ol>
+<li>将插入节点标记为红色。</li>
+<li>若插入节点的父节点是红色：<ul>
+<li>若插入节点的叔节点（父节点的兄弟节点）也是红色，则将父节点和叔节点变为黑色，将祖父节点变为红色，然后以祖父节点为当前节点向上递归进行调整。</li>
+<li>若插入节点的叔节点是黑色，或者为空节点（即叶子节点），则根据父节点和当前节点的相对位置进行旋转操作，使之满足平衡要求。</li>
+</ul>
+</li>
+<li>根节点始终为黑色。</li>
+</ol>
+<p>红黑树的删除操作也通过旋转和重新着色来进行调整。具体来说，删除一个节点后，同样可能会破坏红黑性质，需要进行以下调整步骤：</p>
+<ol>
+<li>若删除节点是红色节点，直接删除即可。</li>
+<li>若删除节点是黑色节点，且它的子节点是红色节点，则将子节点染成黑色，并替换删除节点的位置。</li>
+<li>若删除节点是黑色节点，且它的子节点都是黑色节点，则可能会导致路径上黑色节点数目不等，需要进行进一步调整：<ul>
+<li>若删除节点的兄弟节点是红色，将兄弟节点染成黑色，父节点染成红色，并对父节点进行旋转操作。</li>
+<li>若删除节点的兄弟节点是黑色，且兄弟节点的两个子节点也都是黑色，则将兄弟节点染成红色，并对父节点进行递归调整。</li>
+<li>若删除节点的兄弟节点是黑色，且兄弟节点的一个子节点是红色，则通过旋转和重新着色，使之满足平衡要求。</li>
+</ul>
+</li>
+</ol>
+<p>红黑树除了具有二叉搜索树的查找功能外，还能高效地支持范围查询和顺序统计量等操作。</p>
+<p>总的来说，红黑树通过颜色标记和一些性质约束来保持树的平衡，具有较好的插入、删除和查找性能。它在很多编程语言的标准库中被广泛应用，如C++的std::map和Java的TreeMap等。</p>
+<h3 id="红黑树和AVL树都是自平衡二叉搜索树，但它们在实现方式和自平衡策略上有所不同"><a href="#红黑树和AVL树都是自平衡二叉搜索树，但它们在实现方式和自平衡策略上有所不同" class="headerlink" title="红黑树和AVL树都是自平衡二叉搜索树，但它们在实现方式和自平衡策略上有所不同"></a>红黑树和AVL树都是自平衡二叉搜索树，但它们在实现方式和自平衡策略上有所不同</h3><ul>
+<li>红黑树：红黑树通过颜色的变换和旋转来进行自平衡。插入和删除操作需要根据情况进行左旋、右旋、变色等操作来保持平衡。</li>
+<li>AVL树：AVL树通过旋转操作来进行自平衡。插入和删除操作可能需要进行左旋、右旋、双旋等操作来保持平衡，并且需要更新各个节点的高度信息。</li>
+</ul>
+<h2 id="PID"><a href="#PID" class="headerlink" title="PID"></a>PID</h2><p>PID是指比例-积分-微分控制器（Proportional-Integral-Derivative Controller），是一种常用的控制系统设计方法。PID控制器根据误差信号的大小和变化率来调整输出，以使所控制的系统达到期望状态。</p>
+<p>PID控制器的工作原理如下：</p>
+<ul>
+<li>比例（Proportional）：根据当前的误差信号进行调整。比例增益参数Kp决定了输出对误差的敏感度，较大的增益会导致更快的响应速度，但可能引起过冲和震荡。</li>
+<li>积分（Integral）：累积误差信号，并在一段时间内进行校正。积分增益参数Ki决定了输出对积分误差的敏感度。积分控制用于处理稳态误差，可以消除稳态偏差。</li>
+<li>微分（Derivative）：根据误差变化率进行调整。微分增益参数Kd决定了输出对误差变化率的敏感度。微分控制用于抑制系统的超调和减小振荡。</li>
+</ul>
+<p>PID控制器根据当前的误差信号计算出一个调整量，该调整量与系统的输出值相加，最终形成新的输出值。通过不断地调整PID的参数，可以实现对控制系统的精确控制。</p>
+<p>需要注意的是，PID控制器在某些情况下可能无法满足控制要求，例如非线性系统、时变系统等。在这些情况下，可能需要使用其他高级的控制算法来进行控制。</p>
+
                 
               </div>
             
