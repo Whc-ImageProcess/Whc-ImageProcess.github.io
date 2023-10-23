@@ -1,0 +1,739 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="../../../../img/fluid.png">
+  <link rel="icon" href="../../../../img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="WHC">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="本文关键词：C++ 多态 多继承 多重继承 虚函数表 虚函数指针 动态绑定 概述：C++相对其他面向对象语言来说，之所以灵活、高效。很大程度的占比在于其多态技术和模板技术。C++虚函数表是支撑C++多态的重要技术，它是C++动态绑定技术的核心。本文章将着重图解虚函数表相关知识，在阅读本文前，博主已经默认你已经学习了C++多态的语法，并且通过代码实践过。 一、多态起手式以及内存分布假设有一个基类Cl">
+<meta property="og:type" content="article">
+<meta property="og:title" content="C++多态虚函数表详解">
+<meta property="og:url" content="http://example.com/2023/10/22/C-%E5%A4%9A%E6%80%81%E8%99%9A%E5%87%BD%E6%95%B0%E8%A1%A8%E8%AF%A6%E8%A7%A3/index.html">
+<meta property="og:site_name" content="WHC2Enable">
+<meta property="og:description" content="本文关键词：C++ 多态 多继承 多重继承 虚函数表 虚函数指针 动态绑定 概述：C++相对其他面向对象语言来说，之所以灵活、高效。很大程度的占比在于其多态技术和模板技术。C++虚函数表是支撑C++多态的重要技术，它是C++动态绑定技术的核心。本文章将着重图解虚函数表相关知识，在阅读本文前，博主已经默认你已经学习了C++多态的语法，并且通过代码实践过。 一、多态起手式以及内存分布假设有一个基类Cl">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/2023/10/22/C-%E5%A4%9A%E6%80%81%E8%99%9A%E5%87%BD%E6%95%B0%E8%A1%A8%E8%AF%A6%E8%A7%A3/image1.png">
+<meta property="og:image" content="http://example.com/2023/10/22/C-%E5%A4%9A%E6%80%81%E8%99%9A%E5%87%BD%E6%95%B0%E8%A1%A8%E8%AF%A6%E8%A7%A3/image2.png">
+<meta property="og:image" content="http://example.com/2023/10/22/C-%E5%A4%9A%E6%80%81%E8%99%9A%E5%87%BD%E6%95%B0%E8%A1%A8%E8%AF%A6%E8%A7%A3/image3.png">
+<meta property="og:image" content="http://example.com/2023/10/22/C-%E5%A4%9A%E6%80%81%E8%99%9A%E5%87%BD%E6%95%B0%E8%A1%A8%E8%AF%A6%E8%A7%A3/image4.png">
+<meta property="og:image" content="http://example.com/2023/10/22/C-%E5%A4%9A%E6%80%81%E8%99%9A%E5%87%BD%E6%95%B0%E8%A1%A8%E8%AF%A6%E8%A7%A3/image5.png">
+<meta property="article:published_time" content="2023-10-22T05:15:27.000Z">
+<meta property="article:modified_time" content="2023-10-22T11:42:10.919Z">
+<meta property="article:author" content="WHC">
+<meta property="article:tag" content="cpp">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://example.com/2023/10/22/C-%E5%A4%9A%E6%80%81%E8%99%9A%E5%87%BD%E6%95%B0%E8%A1%A8%E8%AF%A6%E8%A7%A3/image1.png">
+  
+  
+  
+  <title>C++多态虚函数表详解 - WHC2Enable</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="../../../../css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="../../../../css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="../../../../css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.5","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"23sq65MU7rrVFz0XjoKRZuMM-gzGzoHsz","app_key":"5J5wrPRqIyjTgcZsPvLLlfvc","server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="../../../../js/utils.js" ></script>
+  <script  src="../../../../js/color-schema.js" ></script>
+  
+
+  
+
+  
+    <!-- Google tag (gtag.js) -->
+    <script async>
+      if (!Fluid.ctx.dnt) {
+        Fluid.utils.createScript("https://www.googletagmanager.com/gtag/js?id=", function() {
+          window.dataLayer = window.dataLayer || [];
+          function gtag() {
+            dataLayer.push(arguments);
+          }
+          gtag('js', new Date());
+          gtag('config', '');
+        });
+      }
+    </script>
+  
+
+  
+
+  
+
+  
+
+  
+    
+  
+
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="../../../../index.html">
+      <strong>WHC2Enable BLOG</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="../../../../index.html">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="../../../../archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="../../../../categories/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="../../../../tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="../../../../about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('../../../../img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="C++多态虚函数表详解"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2023-10-22 13:15" pubdate>
+          2023年10月22日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          6.5k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          54 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="leancloud-page-views-container" class="post-meta" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="leancloud-page-views"></span> 次
+        </span>
+        
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">C++多态虚函数表详解</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>本文关键词：C++ 多态 多继承 多重继承 虚函数表 虚函数指针 动态绑定</p>
+<p>概述：C++相对其他面向对象语言来说，之所以灵活、高效。很大程度的占比在于其多态技术和模板技术。C++虚函数表是支撑C++多态的重要技术，它是C++动态绑定技术的核心。<br>本文章将着重图解虚函数表相关知识，在阅读本文前，博主已经默认你已经学习了C++多态的语法，并且通过代码实践过。</p>
+<h2 id="一、多态起手式以及内存分布"><a href="#一、多态起手式以及内存分布" class="headerlink" title="一、多态起手式以及内存分布"></a>一、多态起手式以及内存分布</h2><p>假设有一个基类ClassA，一个继承了该基类的派生类ClassB，并且基类中有虚函数，派生类实现了基类的虚函数。<br>我们在代码中运用多态这个特性时，通常以两种方式起手：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs cpp">(<span class="hljs-number">1</span>) ClassA *a = <span class="hljs-keyword">new</span> <span class="hljs-built_in">ClassB</span>();<br>(<span class="hljs-number">2</span>) ClassB b; ClassA *a = &amp;b;<br></code></pre></td></tr></table></figure>
+
+<p>以上两种方式都是用基类指针去指向一个派生类实例，区别在于第1个用了new关键字而分配在堆上，第2个分配在栈上。</p>
+<p><img src="image1.png" srcset="/img/loading.gif" lazyload alt="堆上创建对象和栈上创建对象的不同"></p>
+<p>请看上图，不同两种方式起手仅仅影响了派生类对象实例存在的位置。<br>以左图为例，ClassA *a是一个栈上的指针。<br>该指针指向一个在堆上实例化的子类对象。基类如果存在虚函数，那么在子类对象中，除了成员函数与成员变量外，编译器会自动生成一个指向**该类的虚函数表(这里是类ClassB)**的指针，叫作虚函数表指针。通过虚函数表指针，父类指针即可调用该虚函数表中所有的虚函数。</p>
+<h2 id="二、类的虚函数表与类实例的虚函数指针"><a href="#二、类的虚函数表与类实例的虚函数指针" class="headerlink" title="二、类的虚函数表与类实例的虚函数指针"></a>二、类的虚函数表与类实例的虚函数指针</h2><p>首先不考虑继承的情况。如果一个类中有虚函数，那么该类就有一个虚函数表。<br>这个虚函数表是属于类的，所有该类的实例化对象中都会有一个虚函数表指针去指向该类的虚函数表。<br>从第一部分的图中我们也能看到，一个类的实例要么在堆上，要么在栈上。也就是说一个类可以有很多很多个实例。但是！一个类只能有一个虚函数表。在编译时，一个类的虚函数表就确定了，这也是为什么它放在了只读数据段中。</p>
+<p><img src="image2.png" srcset="/img/loading.gif" lazyload alt="一个类对应一个虚函数表"></p>
+<h2 id="三、多态代码及多重继承情况"><a href="#三、多态代码及多重继承情况" class="headerlink" title="三、多态代码及多重继承情况"></a>三、多态代码及多重继承情况</h2><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-keyword">class</span> <span class="hljs-title class_">ClassA</span><br>&#123;<br><span class="hljs-keyword">public</span>:<br>	<span class="hljs-built_in">ClassA</span>() &#123; cout &lt;&lt; <span class="hljs-string">&quot;ClassA::ClassA()&quot;</span> &lt;&lt; endl; &#125;<br>	<span class="hljs-keyword">virtual</span> ~<span class="hljs-built_in">ClassA</span>() &#123; cout &lt;&lt; <span class="hljs-string">&quot;ClassA::~ClassA()&quot;</span> &lt;&lt; endl; &#125;<br><br>	<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">func1</span><span class="hljs-params">()</span> </span>&#123; cout &lt;&lt; <span class="hljs-string">&quot;ClassA::func1()&quot;</span> &lt;&lt; endl; &#125;<br>	<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">func2</span><span class="hljs-params">()</span> </span>&#123; cout &lt;&lt; <span class="hljs-string">&quot;ClassA::func2()&quot;</span> &lt;&lt; endl; &#125;<br><br>	<span class="hljs-function"><span class="hljs-keyword">virtual</span> <span class="hljs-type">void</span> <span class="hljs-title">vfunc1</span><span class="hljs-params">()</span> </span>&#123; cout &lt;&lt; <span class="hljs-string">&quot;ClassA::vfunc1()&quot;</span> &lt;&lt; endl; &#125;<br>	<span class="hljs-function"><span class="hljs-keyword">virtual</span> <span class="hljs-type">void</span> <span class="hljs-title">vfunc2</span><span class="hljs-params">()</span> </span>&#123; cout &lt;&lt; <span class="hljs-string">&quot;ClassA::vfunc2()&quot;</span> &lt;&lt; endl; &#125;<br><span class="hljs-keyword">private</span>:<br>	<span class="hljs-type">int</span> aData;<br>&#125;;<br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">ClassB</span> : <span class="hljs-keyword">public</span> ClassA<br>&#123;<br><span class="hljs-keyword">public</span>:<br>	<span class="hljs-built_in">ClassB</span>() &#123; cout &lt;&lt; <span class="hljs-string">&quot;ClassB::ClassB()&quot;</span> &lt;&lt; endl; &#125;<br>	<span class="hljs-keyword">virtual</span> ~<span class="hljs-built_in">ClassB</span>() &#123; cout &lt;&lt; <span class="hljs-string">&quot;ClassB::~ClassB()&quot;</span> &lt;&lt; endl; &#125;<br><br>	<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">func1</span><span class="hljs-params">()</span> </span>&#123; cout &lt;&lt; <span class="hljs-string">&quot;ClassB::func1()&quot;</span> &lt;&lt; endl; &#125;<br>	<span class="hljs-function"><span class="hljs-keyword">virtual</span> <span class="hljs-type">void</span> <span class="hljs-title">vfunc1</span><span class="hljs-params">()</span> </span>&#123; cout &lt;&lt; <span class="hljs-string">&quot;ClassB::vfunc1()&quot;</span> &lt;&lt; endl; &#125;<br><span class="hljs-keyword">private</span>:<br>	<span class="hljs-type">int</span> bData;<br>&#125;;<br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">ClassC</span> : <span class="hljs-keyword">public</span> ClassB<br>&#123;<br><span class="hljs-keyword">public</span>:<br>	<span class="hljs-built_in">ClassC</span>() &#123; cout &lt;&lt; <span class="hljs-string">&quot;ClassC::ClassC()&quot;</span> &lt;&lt; endl; &#125;<br>	<span class="hljs-keyword">virtual</span> ~<span class="hljs-built_in">ClassC</span>() &#123; cout &lt;&lt; <span class="hljs-string">&quot;ClassC::~ClassC()&quot;</span> &lt;&lt; endl; &#125;<br><br>	<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">func2</span><span class="hljs-params">()</span> </span>&#123; cout &lt;&lt; <span class="hljs-string">&quot;ClassC::func2()&quot;</span> &lt;&lt; endl; &#125;<br>	<span class="hljs-function"><span class="hljs-keyword">virtual</span> <span class="hljs-type">void</span> <span class="hljs-title">vfunc2</span><span class="hljs-params">()</span> </span>&#123; cout &lt;&lt; <span class="hljs-string">&quot;ClassC::vfunc2()&quot;</span> &lt;&lt; endl; &#125;<br><span class="hljs-keyword">private</span>:<br>	<span class="hljs-type">int</span> cData;<br>&#125;;<br></code></pre></td></tr></table></figure>
+
+<p>在第二部分中，我们讨论了在没有继承的情况下，虚函数表的逻辑结构。<br>那么在有继承情况下，<code>只要基类有虚函数，子类不论实现或没实现，都有虚函数表。</code><br>请看上面代码<br>(1) ClassA是基类, 有普通函数: func1() func2() 。虚函数: vfunc1() vfunc2() ~ClassA()<br>(2) ClassB继承ClassA, 有普通函数: func1()。虚函数: vfunc1() ~ClassB()<br>(3) ClassC继承ClassB, 有普通函数: func2()。虚函数: vfunc2() ~ClassB()<br><code>基类的虚函数表和子类的虚函数表不是同一个表。</code>下图是基类实例与多态情形下，数据逻辑结构。注意，虚函数表是在编译时确定的，属于类而不属于某个具体的实例。虚函数在代码段，仅有一份。</p>
+<p><img src="image3.png" srcset="/img/loading.gif" lazyload alt="只要基类有虚函数，子类不论实现或没实现，都有虚函数表"></p>
+<p>ClassB继承与ClassA，其虚函数表是在ClassA虚函数表的基础上有所改动的，变化的仅仅是在子类中重写的虚函数。如果子类没有重写任何父类虚函数，那么子类的虚函数表和父类的虚函数表在内容上是一致的。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs cpp">ClassA *a = <span class="hljs-keyword">new</span> <span class="hljs-built_in">ClassB</span>();<br>a-&gt;<span class="hljs-built_in">func1</span>();                    <span class="hljs-comment">// &quot;ClassA::func1()&quot;   隐藏了ClassB的func1()</span><br>a-&gt;<span class="hljs-built_in">func2</span>();                    <span class="hljs-comment">// &quot;ClassA::func2()&quot;</span><br>a-&gt;<span class="hljs-built_in">vfunc1</span>();                   <span class="hljs-comment">// &quot;ClassB::vfunc1()&quot;  重写了ClassA的vfunc1()</span><br>a-&gt;<span class="hljs-built_in">vfunc2</span>();                   <span class="hljs-comment">// &quot;ClassA::vfunc2()&quot;</span><br></code></pre></td></tr></table></figure>
+
+<p>这个结果不难想象，看上图，ClassA类型的指针a能操作的范围只能是黑框中的范围，之所以实现了多态完全是因为子类的虚函数表指针与虚函数表的内容与基类不同<br>这个结果已经说明了C++的隐藏、重写(覆盖)特性。</p>
+<p>同理，也就不难推导出ClassC的逻辑结构图了<br>类的继承情况是: ClassC继承ClassB，ClassB继承ClassA<br>这是一个多次单继承的情况。(多重继承)</p>
+<p><img src="image4.png" srcset="/img/loading.gif" lazyload alt="多重继承"></p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs cpp">ClassA* a = <span class="hljs-keyword">new</span> ClassC;<br>a-&gt;<span class="hljs-built_in">func1</span>();          <span class="hljs-comment">// &quot;ClassA::func1()&quot;   隐藏ClassB::func1()               </span><br>a-&gt;<span class="hljs-built_in">func2</span>();          <span class="hljs-comment">// &quot;ClassA::func2()&quot;	隐藏ClassC::func2()</span><br>a-&gt;<span class="hljs-built_in">vfunc1</span>();	     <span class="hljs-comment">// &quot;ClassB::vfunc1()&quot;	ClassB把ClassA::vfunc1()覆盖了</span><br>a-&gt;<span class="hljs-built_in">vfunc2</span>();	     <span class="hljs-comment">// &quot;ClassC::vfunc2()&quot;	ClassC把ClassA::vfunc2()覆盖了</span><br><br>ClassB* b = <span class="hljs-keyword">new</span> ClassC;<br>b-&gt;<span class="hljs-built_in">func1</span>();				<span class="hljs-comment">// &quot;ClassB::func1()&quot;	有权限操作时，子类优先</span><br>b-&gt;<span class="hljs-built_in">func2</span>();				<span class="hljs-comment">// &quot;ClassA::func2()&quot;	隐藏ClassC::func2()</span><br>b-&gt;<span class="hljs-built_in">vfunc1</span>();			<span class="hljs-comment">// &quot;ClassB::vfunc1()&quot;	ClassB把ClassA::vfunc1()覆盖了</span><br>b-&gt;<span class="hljs-built_in">vfunc2</span>();			<span class="hljs-comment">// &quot;ClassB::vfunc2()&quot;	ClassC把ClassA::vfunc2()覆盖了</span><br></code></pre></td></tr></table></figure>
+
+<h2 id="四、多继承下的虚函数表-同时继承多个基类"><a href="#四、多继承下的虚函数表-同时继承多个基类" class="headerlink" title="四、多继承下的虚函数表 (同时继承多个基类)"></a>四、多继承下的虚函数表 (同时继承多个基类)</h2><p>多继承是指一个类同时继承了多个基类，假设这些基类都有虚函数，也就是说每个基类都有虚函数表，那么该子类的逻辑结果和虚函数表是什么样子呢？</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-keyword">class</span> <span class="hljs-title class_">ClassA1</span><br>&#123;<br><span class="hljs-keyword">public</span>:<br>	<span class="hljs-built_in">ClassA1</span>() &#123; cout &lt;&lt; <span class="hljs-string">&quot;ClassA1::ClassA1()&quot;</span> &lt;&lt; endl; &#125;<br>	<span class="hljs-keyword">virtual</span> ~<span class="hljs-built_in">ClassA1</span>() &#123; cout &lt;&lt; <span class="hljs-string">&quot;ClassA1::~ClassA1()&quot;</span> &lt;&lt; endl; &#125;<br><br>	<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">func1</span><span class="hljs-params">()</span> </span>&#123; cout &lt;&lt; <span class="hljs-string">&quot;ClassA1::func1()&quot;</span> &lt;&lt; endl; &#125;<br><br>	<span class="hljs-function"><span class="hljs-keyword">virtual</span> <span class="hljs-type">void</span> <span class="hljs-title">vfunc1</span><span class="hljs-params">()</span> </span>&#123; cout &lt;&lt; <span class="hljs-string">&quot;ClassA1::vfunc1()&quot;</span> &lt;&lt; endl; &#125;<br>	<span class="hljs-function"><span class="hljs-keyword">virtual</span> <span class="hljs-type">void</span> <span class="hljs-title">vfunc2</span><span class="hljs-params">()</span> </span>&#123; cout &lt;&lt; <span class="hljs-string">&quot;ClassA1::vfunc2()&quot;</span> &lt;&lt; endl; &#125;<br><span class="hljs-keyword">private</span>:<br>	<span class="hljs-type">int</span> a1Data;<br>&#125;;<br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">ClassA2</span><br>&#123;<br><span class="hljs-keyword">public</span>:<br>	<span class="hljs-built_in">ClassA2</span>() &#123; cout &lt;&lt; <span class="hljs-string">&quot;ClassA2::ClassA2()&quot;</span> &lt;&lt; endl; &#125;<br>	<span class="hljs-keyword">virtual</span> ~<span class="hljs-built_in">ClassA2</span>() &#123; cout &lt;&lt; <span class="hljs-string">&quot;ClassA2::~ClassA2()&quot;</span> &lt;&lt; endl; &#125;<br><br>	<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">func1</span><span class="hljs-params">()</span> </span>&#123; cout &lt;&lt; <span class="hljs-string">&quot;ClassA2::func1()&quot;</span> &lt;&lt; endl; &#125;<br><br>	<span class="hljs-function"><span class="hljs-keyword">virtual</span> <span class="hljs-type">void</span> <span class="hljs-title">vfunc1</span><span class="hljs-params">()</span> </span>&#123; cout &lt;&lt; <span class="hljs-string">&quot;ClassA2::vfunc1()&quot;</span> &lt;&lt; endl; &#125;<br>	<span class="hljs-function"><span class="hljs-keyword">virtual</span> <span class="hljs-type">void</span> <span class="hljs-title">vfunc2</span><span class="hljs-params">()</span> </span>&#123; cout &lt;&lt; <span class="hljs-string">&quot;ClassA2::vfunc2()&quot;</span> &lt;&lt; endl; &#125;<br>	<span class="hljs-function"><span class="hljs-keyword">virtual</span> <span class="hljs-type">void</span> <span class="hljs-title">vfunc4</span><span class="hljs-params">()</span> </span>&#123; cout &lt;&lt; <span class="hljs-string">&quot;ClassA2::vfunc4()&quot;</span> &lt;&lt; endl; &#125;<br><span class="hljs-keyword">private</span>:<br>	<span class="hljs-type">int</span> a2Data;<br>&#125;;<br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">ClassC</span> : <span class="hljs-keyword">public</span> ClassA1, <span class="hljs-keyword">public</span> ClassA2<br>&#123;<br><span class="hljs-keyword">public</span>:<br>	<span class="hljs-built_in">ClassC</span>() &#123; cout &lt;&lt; <span class="hljs-string">&quot;ClassC::ClassC()&quot;</span> &lt;&lt; endl; &#125;<br>	<span class="hljs-keyword">virtual</span> ~<span class="hljs-built_in">ClassC</span>() &#123; cout &lt;&lt; <span class="hljs-string">&quot;ClassC::~ClassC()&quot;</span> &lt;&lt; endl; &#125;<br><br>	<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">func1</span><span class="hljs-params">()</span> </span>&#123; cout &lt;&lt; <span class="hljs-string">&quot;ClassC::func1()&quot;</span> &lt;&lt; endl; &#125;<br><br>	<span class="hljs-function"><span class="hljs-keyword">virtual</span> <span class="hljs-type">void</span> <span class="hljs-title">vfunc1</span><span class="hljs-params">()</span> </span>&#123; cout &lt;&lt; <span class="hljs-string">&quot;ClassC::vfunc1()&quot;</span> &lt;&lt; endl; &#125;<br>	<span class="hljs-function"><span class="hljs-keyword">virtual</span> <span class="hljs-type">void</span> <span class="hljs-title">vfunc2</span><span class="hljs-params">()</span> </span>&#123; cout &lt;&lt; <span class="hljs-string">&quot;ClassC::vfunc2()&quot;</span> &lt;&lt; endl; &#125;<br>	<span class="hljs-function"><span class="hljs-keyword">virtual</span> <span class="hljs-type">void</span> <span class="hljs-title">vfunc3</span><span class="hljs-params">()</span> </span>&#123; cout &lt;&lt; <span class="hljs-string">&quot;ClassC::vfunc3()&quot;</span> &lt;&lt; endl; &#125;<br>&#125;;<br></code></pre></td></tr></table></figure>
+
+<p>ClassA1是第一个基类，拥有普通函数func1()，虚函数vfunc1() vfunc2()。<br>ClassA2是第二个基类，拥有普通函数func1()，虚函数vfunc1() vfunc2()，vfunc4()。<br>ClassC依次继承ClassA1、ClassA2。普通函数func1(),虚函数vfunc1() vfunc2() vfunc3()。</p>
+<p><img src="image5.png" srcset="/img/loading.gif" lazyload alt="多继承下的虚函数表"></p>
+<p>在多继承情况下，有多少个基类就有多少个虚函数表指针，前提是基类要有虚函数才算上这个基类。<br>如图，虚函数表指针01指向的虚函数表是以ClassA1的虚函数表为基础的，子类的ClassC::vfunc1(),和vfunc2()的函数指针覆盖了虚函数表01中的虚函数指针01的位置、02位置。当子类有多出来的虚函数时，添加在第一个虚函数表中。<br>当有多个虚函数表时，虚函数表的结果是0代表没有下一个虚函数表。” * “号位置在不同操作系统中实现不同，代表有下一个虚函数表。<br>注意：<br>1.子类虚函数会覆盖每一个父类的每一个同名虚函数。<br>2.父类中没有的虚函数而子类有，填入第一个虚函数表中，且用父类指针是不能调用。<br>3.父类中有的虚函数而子类没有，则不覆盖。仅子类和该父类指针能调用。</p>
+<p>最后给出代码和结果</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs cpp">ClassA1 *a1 = <span class="hljs-keyword">new</span> ClassC;<br>a1-&gt;<span class="hljs-built_in">func1</span>();               <span class="hljs-comment">// &quot;ClassA1::func1()&quot;    隐藏子类同名函数</span><br>a1-&gt;<span class="hljs-built_in">vfunc1</span>();              <span class="hljs-comment">// &quot;ClassC::vfunc1()&quot;    覆盖父类ClassA1虚函数</span><br>a1-&gt;<span class="hljs-built_in">vfunc2</span>();              <span class="hljs-comment">// &quot;ClassC::vfunc2()&quot;    覆盖父类ClassA1虚函数</span><br>没有a1-&gt;<span class="hljs-built_in">vfunc3</span>()，父类没有这个虚函数<br><br>ClassA2 *a2 = <span class="hljs-keyword">new</span> ClassC;<br>a2-&gt;<span class="hljs-built_in">func1</span>();               <span class="hljs-comment">// &quot;ClassA2::func1()&quot;    隐藏子类同名函数</span><br>a2-&gt;<span class="hljs-built_in">vfunc1</span>();              <span class="hljs-comment">// &quot;ClassC::vfunc1()&quot;    覆盖父类ClassA2虚函数</span><br>a2-&gt;<span class="hljs-built_in">vfunc2</span>();              <span class="hljs-comment">// &quot;ClassC::vfunc2()&quot;    覆盖父类ClassA2虚函数</span><br>a2-&gt;<span class="hljs-built_in">vfunc4</span>();              <span class="hljs-comment">// &quot;ClassA2::vfunc4()&quot;   未被子类重写的父类虚函数</span><br><br>ClassC *c = <span class="hljs-keyword">new</span> ClassC;<br>c-&gt;<span class="hljs-built_in">func1</span>();                <span class="hljs-comment">// &quot;ClassC::func1()&quot;</span><br>c-&gt;<span class="hljs-built_in">vfunc1</span>();               <span class="hljs-comment">// &quot;ClassC::vfunc1()&quot;</span><br>c-&gt;<span class="hljs-built_in">vfunc2</span>();               <span class="hljs-comment">// &quot;ClassC::vfunc2()&quot;</span><br>c-&gt;<span class="hljs-built_in">vfunc3</span>();               <span class="hljs-comment">// &quot;ClassC::vfunc3()&quot;</span><br>c-&gt;<span class="hljs-built_in">vfunc4</span>();               <span class="hljs-comment">// &quot;ClassA2::func4()&quot;</span><br></code></pre></td></tr></table></figure>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="../../../../categories/%E5%85%AB%E8%82%A1%E6%96%87/" class="category-chain-item">八股文</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="../../../../tags/cpp/" class="print-no-link">#cpp</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>C++多态虚函数表详解</div>
+      <div>http://example.com/2023/10/22/C-多态虚函数表详解/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>WHC</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2023年10月22日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="../../../09/22/%E9%9D%A2%E8%AF%95%E6%89%8B%E6%92%95%E4%BB%A3%E7%A0%81/" title="面试手撕代码">
+                        <span class="hidden-mobile">面试手撕代码</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="leancloud-site-pv-container" style="display: none">
+        总访问量 
+        <span id="leancloud-site-pv"></span>
+         次
+      </span>
+    
+    
+      <span id="leancloud-site-uv-container" style="display: none">
+        总访客数 
+        <span id="leancloud-site-uv"></span>
+         人
+      </span>
+    
+    
+
+  
+</div>
+
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="../../../../js/events.js" ></script>
+<script  src="../../../../js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="../../../../js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script defer src="../../../../js/leancloud.js" ></script>
+
+  <script  src="../../../../js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="../../../../js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
