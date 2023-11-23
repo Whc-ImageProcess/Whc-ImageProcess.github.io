@@ -25,7 +25,7 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://example.com/2023/09/17/cpp%E5%85%AB%E8%82%A1%E6%96%87/%E7%BB%A7%E6%89%BF%E7%9A%84%E8%AE%BF%E9%97%AE%E6%9D%83%E9%99%90.png">
 <meta property="article:published_time" content="2023-09-17T02:51:36.000Z">
-<meta property="article:modified_time" content="2023-10-13T08:25:48.613Z">
+<meta property="article:modified_time" content="2023-11-01T03:26:31.507Z">
 <meta property="article:author" content="WHC">
 <meta property="article:tag" content="cpp">
 <meta name="twitter:card" content="summary_large_image">
@@ -251,7 +251,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          7.6k 字
+          8.9k 字
         
       </span>
     
@@ -262,7 +262,7 @@
         
         
         
-          64 分钟
+          74 分钟
         
       </span>
     
@@ -440,8 +440,25 @@
 <li>引用：通过引用传递参数可以实现按引用传递，允许函数修改原始对象的值。这通常用于避免拷贝大型对象。</li>
 <li>指针：通过指针传递参数可以实现按指针传递，允许函数修改原始对象的值。指针传递需要显式地使用指针运算符 * 来访问对象。</li>
 </ul>
-<h2 id="POSIX线程库（pthread）"><a href="#POSIX线程库（pthread）" class="headerlink" title="POSIX线程库（pthread）"></a>POSIX线程库（pthread）</h2><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">pthread_create</span><span class="hljs-params">(<span class="hljs-type">pthread_t</span> *thread, <span class="hljs-type">const</span> <span class="hljs-type">pthread_attr_t</span> *attr, <span class="hljs-type">void</span> *(*start_routine) (<span class="hljs-type">void</span> *), <span class="hljs-type">void</span> *arg)</span></span>;<br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">pthread_mutex_lock</span><span class="hljs-params">(<span class="hljs-type">pthread_mutex_t</span> *mutex)</span></span>;<br></code></pre></td></tr></table></figure>
+<h2 id="POSIX线程库（pthread）"><a href="#POSIX线程库（pthread）" class="headerlink" title="POSIX线程库（pthread）"></a>POSIX线程库（pthread）</h2><p>POSIX线程库，通常简称为pthread，是一套用于多线程编程的标准接口，最初定义在POSIX.1标准中。它提供了一组函数和数据类型，用于创建、管理和同步线程，允许程序在多个并发执行的线程中进行任务分配和协调。</p>
+<p>使用pthread库可以实现多线程的目标，如提高程序的性能、增加并发性和响应能力、利用多核处理器等。下面是pthread库的一些主要特点和功能：</p>
+<ol>
+<li>线程创建和管理：pthread库提供了函数，如pthread_create()和pthread_join()，用于创建和管理线程。开发人员可以使用这些函数来创建新的线程，并等待线程的结束。</li>
+<li>线程同步：pthread库提供了一系列的同步原语，如互斥锁（mutex）、条件变量（condition variable）和信号量（semaphore）。通过这些同步机制，可以实现线程之间的互斥、同步和协作，以避免竞态条件和其他并发问题。</li>
+<li>线程控制：pthread库支持线程的属性设置和控制。例如，可以设置线程的优先级、栈大小和调度策略等。此外，还可以通过函数pthread_exit()和pthread_cancel()来终止线程的执行。</li>
+<li>线程局部存储：pthread库允许每个线程具有自己独立的线程局部存储（thread-local storage）。这意味着每个线程都有自己的变量副本，这些变量对于其他线程是不可见的，可以提供线程间的数据隔离。</li>
+<li>线程间通信：pthread库提供了一些函数用于线程间的通信。例如，通过条件变量（condition variable）可以实现线程的等待和唤醒操作，通过互斥锁（mutex）可以实现线程的互斥访问共享资源。</li>
+</ol>
+<p>总体而言，POSIX线程库（pthread）是一个功能强大且广泛支持的多线程编程接口，被广泛应用于各种操作系统和编程语言中。它为开发人员提供了一套标准化的工具和机制，以便高效地编写并发程序，并处理多线程之间的同步和通信问题。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-comment">// 线程创建：pthread_create</span><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">pthread_create</span><span class="hljs-params">(<span class="hljs-type">pthread_t</span> *thread, <span class="hljs-type">const</span> <span class="hljs-type">pthread_attr_t</span> *attr, <span class="hljs-type">void</span> *(*start_routine) (<span class="hljs-type">void</span> *), <span class="hljs-type">void</span> *arg)</span></span>;<br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">pthread_mutex_lock</span><span class="hljs-params">(<span class="hljs-type">pthread_mutex_t</span> *mutex)</span></span>;<br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">pthread_exit</span><span class="hljs-params">(<span class="hljs-type">void</span> *value_ptr)</span></span>;<br><span class="hljs-comment">// 线程回收：pthread_join</span><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">pthread_join</span><span class="hljs-params">(<span class="hljs-type">pthread_t</span> thread, <span class="hljs-type">void</span> **value_ptr)</span></span>;<br><span class="hljs-comment">// 线程取消：pthread_cancel</span><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">pthread_cancel</span><span class="hljs-params">(<span class="hljs-type">pthread_t</span> thread)</span></span>;<br><span class="hljs-comment">// 线程分离：pthread_detach</span><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">pthread_detach</span><span class="hljs-params">(<span class="hljs-type">pthread_t</span> thread)</span></span>;<br></code></pre></td></tr></table></figure>
 
+<h3 id="线程注意事项"><a href="#线程注意事项" class="headerlink" title="线程注意事项"></a>线程注意事项</h3><ol>
+<li>其他线程保留，主线程退出用pthread_exit；</li>
+<li>避免僵尸线程考虑使用：<br>  pthread_join<br>  pthread_detach<br>  pthread_create指定分离属性；</li>
+<li>malloc和mmap的内存其他线程可以使用；</li>
+<li>应多避免多线程调用fork，除非马上exec，子进程中只有调用fork的线程存在，其他线程都已退出；</li>
+<li>信号的复杂语义很难和多线程共存，应避免多线程引入信号机制，因为信号来了哪个线程先抢到就是它处理，各线程有独立的mask屏蔽字，处理方式是共享的，很难指定哪个线程处理。</li>
+</ol>
 <h2 id="什么时候用条件变量，什么时候用线程锁？"><a href="#什么时候用条件变量，什么时候用线程锁？" class="headerlink" title="什么时候用条件变量，什么时候用线程锁？"></a>什么时候用条件变量，什么时候用线程锁？</h2><p>条件变量（Condition Variable）：条件变量用于线程之间的协作，它允许线程等待某个条件的发生，然后在条件满足时被唤醒。条件变量通常与线程锁一起使用，以实现更复杂的同步需求。条件变量主要用于以下情况：</p>
 <ul>
 <li>等待事件发生：当一个线程需要等待某个条件变为真时，它可以进入等待状态，释放锁，然后等待其他线程通过条件变量发出信号通知它条件已经满足。</li>
