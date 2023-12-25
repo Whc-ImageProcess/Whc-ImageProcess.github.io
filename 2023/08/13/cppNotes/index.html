@@ -24,7 +24,7 @@
 <meta property="og:description" content="初始化列表在C++中，初始化列表（initializer list）是用于初始化类成员变量的一种方式。以下是必须在初始化列表中初始化的情况：  常量成员变量（const）：由于常量成员变量在创建对象时必须进行初始化，因此它们必须在初始化列表中初始化。  引用成员变量（reference）：引用必须在创建对象时初始化，并且一旦初始化后，就不能再引用其他对象。因此，引用成员变量必须在初始化列表中初始化">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2023-08-13T08:45:00.000Z">
-<meta property="article:modified_time" content="2023-10-09T05:47:13.397Z">
+<meta property="article:modified_time" content="2023-12-25T04:59:59.074Z">
 <meta property="article:author" content="WHC">
 <meta property="article:tag" content="cpp">
 <meta name="twitter:card" content="summary_large_image">
@@ -260,7 +260,7 @@
         
         
         
-          90 分钟
+          96 分钟
         
       </span>
     
@@ -515,6 +515,15 @@
 </li>
 </ol>
 <p>总之，子类继承父类时，虽然可以继承很多东西，但一些特殊的成员变量和方法并不会被自动继承。为了正确地继承和使用父类的成员，需要注意这些情况并适当地处理。</p>
+<h2 id="emplace-back和push-back"><a href="#emplace-back和push-back" class="headerlink" title="emplace_back和push_back"></a>emplace_back和push_back</h2><p>在C++中，emplace_back和push_back都是用于向容器（如std::vector）尾部插入元素的成员函数。然而，在插入pair类型时，它们的行为有一些区别。</p>
+<p>push_back函数接受一个对象作为参数，将其副本插入容器中。当使用push_back插入一个pair对象时，会进行一次复制操作，将该pair对象的副本插入容器。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs cpp">std::vector&lt;std::pair&lt;<span class="hljs-type">int</span>, std::string&gt;&gt; vec;<br>vec.<span class="hljs-built_in">push_back</span>(std::<span class="hljs-built_in">make_pair</span>(<span class="hljs-number">1</span>, <span class="hljs-string">&quot;one&quot;</span>));<br></code></pre></td></tr></table></figure>
+
+<p>相比之下，emplace_back函数可以直接在容器尾部构造元素，避免了复制的开销。它接受构造元素所需的参数，并在容器内部直接构造对象。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs cpp">std::vector&lt;std::pair&lt;<span class="hljs-type">int</span>, std::string&gt;&gt; vec;<br>vec.<span class="hljs-built_in">emplace_back</span>(<span class="hljs-number">1</span>, <span class="hljs-string">&quot;one&quot;</span>);<br></code></pre></td></tr></table></figure>
+
+<p>使用emplace_back时，参数被传递到pair的构造函数中，直接在容器内部构造一个新的pair对象，避免了中间的复制步骤。</p>
+<p>总结起来，push_back用于将已有的对象副本插入容器，而emplace_back则直接在容器内构造对象，避免了复制的开销。因此，在插入pair类型时，emplace_back通常更高效</p>
 
                 
               </div>
