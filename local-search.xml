@@ -4,6 +4,31 @@
   
   
   <entry>
+    <title>shell学习</title>
+    <link href="/2024/01/13/shell%E5%AD%A6%E4%B9%A0/"/>
+    <url>/2024/01/13/shell%E5%AD%A6%E4%B9%A0/</url>
+    
+    <content type="html"><![CDATA[<h2 id="shell"><a href="#shell" class="headerlink" title="shell"></a>shell</h2><h3 id="tip1"><a href="#tip1" class="headerlink" title="tip1"></a>tip1</h3><p>strings命令来过滤掉二进制字符并将文件转换为文本文件</p><p>你可以使用以下命令来利用grep滤除文本中仅出现一次的文本行：</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">cat 文件名 | sort | uniq -u<br></code></pre></td></tr></table></figure><p>个命令会首先使用cat命令读取指定的文件，然后使用sort命令将所有行按字典序排序，最后使用uniq -u命令查找只出现一次的行并输出。</p><h3 id="tip2"><a href="#tip2" class="headerlink" title="tip2"></a>tip2</h3><p>在Shell命令行中，可以使用Ctrl + w快捷键来删除光标附近的一个单词。具体操作如下：</p><ol><li><p>将光标移动到要删除的单词的首字符位置。</p></li><li><p>按下Ctrl + w组合键。</p><p> 这将会删除光标所在位置向前的一个单词，包括该单词前面的空格、制表符等空白字符。</p><p> 如果要删除光标所在位置向后的一个单词，可以使用Ctrl + u组合键。</p></li></ol><p>Ctrl + a 移动到 shell 命令行开头</p><p>Ctrl + e 移动到 shell 命令行结尾</p><h3 id="tip3"><a href="#tip3" class="headerlink" title="tip3"></a>tip3</h3><p>在Shell命令行中，可以使用Ctrl + d快捷键来向右删除一个字符。具体操作如下：</p><ol><li><p>确保光标位于要删除的字符的左侧。</p></li><li><p>按下Ctrl + d组合键。</p><p> 这将会删除光标所在位置向右的一个字符。</p></li></ol><p>需要注意的是，Ctrl + d 组合键同时也有其他功能。当输入行为空时，它表示输入结束，即退出当前Shell会话。因此，如果当前输入行不为空，你需要确保光标处于要删除的字符的左侧，以避免意外退出会话。</p><h2 id="tip4"><a href="#tip4" class="headerlink" title="tip4"></a>tip4</h2><p>在Shell上，你可以使用以下快捷键以单词为单位移动光标：</p><p>Ctrl + ←：向左移动光标到前一个单词的开头。</p><p>Ctrl + →：向右移动光标到后一个单词的结尾。</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>shell</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>linux</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>C++多态虚函数表详解</title>
     <link href="/2023/10/22/C-%E5%A4%9A%E6%80%81%E8%99%9A%E5%87%BD%E6%95%B0%E8%A1%A8%E8%AF%A6%E8%A7%A3/"/>
     <url>/2023/10/22/C-%E5%A4%9A%E6%80%81%E8%99%9A%E5%87%BD%E6%95%B0%E8%A1%A8%E8%AF%A6%E8%A7%A3/</url>
