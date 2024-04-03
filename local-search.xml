@@ -4,6 +4,170 @@
   
   
   <entry>
+    <title>开发者测试c</title>
+    <link href="/2024/04/03/%E5%BC%80%E5%8F%91%E8%80%85%E6%B5%8B%E8%AF%95c/"/>
+    <url>/2024/04/03/%E5%BC%80%E5%8F%91%E8%80%85%E6%B5%8B%E8%AF%95c/</url>
+    
+    <content type="html"><![CDATA[]]></content>
+    
+    
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>C语言进阶</title>
+    <link href="/2024/04/02/C%E8%AF%AD%E8%A8%80%E8%BF%9B%E9%98%B6/"/>
+    <url>/2024/04/02/C%E8%AF%AD%E8%A8%80%E8%BF%9B%E9%98%B6/</url>
+    
+    <content type="html"><![CDATA[]]></content>
+    
+    
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>C语言编程规范</title>
+    <link href="/2024/03/27/C%E8%AF%AD%E8%A8%80%E7%BC%96%E7%A8%8B%E8%A7%84%E8%8C%83/"/>
+    <url>/2024/03/27/C%E8%AF%AD%E8%A8%80%E7%BC%96%E7%A8%8B%E8%A7%84%E8%8C%83/</url>
+    
+    <content type="html"><![CDATA[]]></content>
+    
+    
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>git的使用</title>
+    <link href="/2024/03/27/git%E7%9A%84%E4%BD%BF%E7%94%A8/"/>
+    <url>/2024/03/27/git%E7%9A%84%E4%BD%BF%E7%94%A8/</url>
+    
+    <content type="html"><![CDATA[<h2 id="1、当你手上的修改不想提交，但想使用远端的最新代码时，可以使用以下哪个命令完成修改暂存"><a href="#1、当你手上的修改不想提交，但想使用远端的最新代码时，可以使用以下哪个命令完成修改暂存" class="headerlink" title="1、当你手上的修改不想提交，但想使用远端的最新代码时，可以使用以下哪个命令完成修改暂存?"></a>1、当你手上的修改不想提交，但想使用远端的最新代码时，可以使用以下哪个命令完成修改暂存?</h2><p>具体来说，git stash 的基本用法如下：</p><p>使用 git stash 命令将未提交的修改暂存起来。<br>切换到其他分支或者应用远程更新。<br>在需要的时候可以使用 git stash apply 命令重新应用之前暂存的修改到当前工作目录。<br>此外，还可以使用 git stash list 命令查看已经暂存的修改列表，以及使用 git stash pop 命令将最近一次暂存的修改应用并从暂存列表中移除。</p><h2 id="3、以下哪些命令不能用于代码合并"><a href="#3、以下哪些命令不能用于代码合并" class="headerlink" title="3、以下哪些命令不能用于代码合并?"></a>3、以下哪些命令不能用于代码合并?</h2><p>A. git pull<br>B. git merge<br>C. git blame<br>D. git commit</p><p>CD</p><p>git blame 是一个用于显示指定文件每一行的修改信息的命令。它可以显示每一行是谁在什么时候修改的，并且还可以显示该行的版本号和提交信息。这对于跟踪代码变更、了解代码历史以及定位问题非常有用。通过 git blame，你可以查看文件的每一行是谁做出的修改，这有助于了解代码的演化过程和代码贡献者。</p><p>要使用 git blame，你可以执行类似以下的命令：</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">git blame filename<br></code></pre></td></tr></table></figure><p>这将显示指定文件中每一行的修改信息，包括作者、最后修改的提交信息和提交时间等。</p><h2 id="4、git-diff相关的功能，以下说法正确的有"><a href="#4、git-diff相关的功能，以下说法正确的有" class="headerlink" title="4、git diff相关的功能，以下说法正确的有"></a>4、git diff相关的功能，以下说法正确的有</h2><p>A.比较最新提交点与当前工作目录，使用git diff HEAD<br>B.比较最新提交点与暂存区内容，使用git diff –cached<br>C.比较暂存区与当前工作目录，使用git diff<br>D.比较当前分支与其他分支的差异，使用git diff branchname(分支名)</p><p>ABCD</p><h2 id="git-cherry-pick"><a href="#git-cherry-pick" class="headerlink" title="git cherry-pick"></a>git cherry-pick</h2><p>git cherry-pick 是一个非常有用的 Git 命令，它允许你选择某一个提交（commit）并将其应用到当前分支上。通过 git cherry-pick 命令，你可以将其他分支上的单个提交复制到当前分支，而不必合并整个分支。</p><p>要使用 git cherry-pick，你可以执行以下命令：</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">git cherry-pick &lt;commit-hash&gt;<br></code></pre></td></tr></table></figure><p>其中 <code>&lt;commit-hash&gt;</code>是你希望应用的提交的哈希值。通过这个命令，Git 会将指定提交的更改复制到当前分支，并创建一个新的提交来包含这些更改。</p><p>git cherry-pick 常用于从其他分支选择特定的提交进行应用，例如修复 bug 或者应用特定的功能更新。这个命令使得在 Git 中更加灵活地管理代码变更变得更加方便。</p><h2 id="tips"><a href="#tips" class="headerlink" title="tips"></a>tips</h2><p>git commit –amend会修改当前提交的节点号，如果之前的代码已经推送到远端仓库，再次推送则需要使用-f选项</p><p>git clean -fd -n命令查询未被git库管理的可删除文件及目录，git clean -fd命令则会完成删除操作。</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>编程工具</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>cpp</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>c++语言思考题</title>
+    <link href="/2024/03/26/c-%E8%AF%AD%E8%A8%80%E6%80%9D%E8%80%83%E9%A2%98/"/>
+    <url>/2024/03/26/c-%E8%AF%AD%E8%A8%80%E6%80%9D%E8%80%83%E9%A2%98/</url>
+    
+    <content type="html"><![CDATA[]]></content>
+    
+    
+    <categories>
+      
+      <category>编程语言</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>cpp</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>java语言思考题</title>
+    <link href="/2024/03/26/java%E8%AF%AD%E8%A8%80%E6%80%9D%E8%80%83%E9%A2%98/"/>
+    <url>/2024/03/26/java%E8%AF%AD%E8%A8%80%E6%80%9D%E8%80%83%E9%A2%98/</url>
+    
+    <content type="html"><![CDATA[<h2 id="思考题一"><a href="#思考题一" class="headerlink" title="思考题一"></a>思考题一</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">ZeroTest</span> &#123;<br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">main</span><span class="hljs-params">(String[] args)</span> &#123;<br>     <span class="hljs-keyword">try</span>&#123;<br>       <span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">100</span> / <span class="hljs-number">0</span>;<br>       System.out.print(i);<br>      &#125;<span class="hljs-keyword">catch</span>(Exception e)&#123;<br>       System.out.print(<span class="hljs-number">1</span>);<br>       <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">RuntimeException</span>();<br>      &#125;<span class="hljs-keyword">finally</span>&#123;<br>       System.out.print(<span class="hljs-number">2</span>);<br>      &#125;<br>      System.out.print(<span class="hljs-number">3</span>);<br>     &#125;<br> &#125;<br></code></pre></td></tr></table></figure><p>控制台会输出什么？</p><p>12</p><p>解释如下：</p><p>int i &#x3D; 100 &#x2F; 0; 这行代码会导致一个 ArithmeticException，因为除以零是一个数学上的不合法操作。<br>异常被捕获在 catch 块中，并在那里打印出数字1。<br>finally 块中的代码被执行，打印出数字2。<br>最后，System.out.print(3); 这行代码在 finally 块之后执行，打印出数字3。<br>但是，根据Java的异常处理规则，当 catch 块中抛出一个新的异常（如 RuntimeException）时，原始的 ArithmeticException 将被抑制，并且新的异常将成为控制流程中的主导异常。这意味着 finally 块之后的代码（即 System.out.print(3);）将不会执行。因此，最终输出的数字是1和2。</p><h2 id="思考题二"><a href="#思考题二" class="headerlink" title="思考题二"></a>思考题二</h2><p>JDK 1.7和到JDK8，HashMap有哪些改动，能否举例说明？</p><p>在JDK 1.7和JDK 1.8中，HashMap的实现和性能有显著差异，主要体现在以下几个方面：</p><ul><li><strong>底层结构的变化</strong>：<br>JDK 1.7使用的是数组加链表的结构。<br>JDK 1.8在此基础上增加了红黑树的支持。当链表长度大于一定阈值（默认为8）时，链表会转换为红黑树，从而提高插入和查询效率。</li><li><strong>初始化和扩容策略</strong>：<br>JDK 1.7在哈希表为空时，会先调用inflateTable()初始化一个数组。<br>JDK 1.8则直接调用resize()进行扩容。</li><li><strong>插入节点的方式</strong>：<br>JDK 1.7中，插入节点使用的是头插法。<br>JDK 1.8则使用尾插法。</li><li><strong>hash函数的计算</strong>：<br>JDK 1.7中直接使用key的hashCode()值。<br>JDK 1.8通过key的hashCode()值进行异或运算，并右移16位，以避免只依赖低位数据导致的冲突，使元素分布更均匀。</li><li><strong>扩容策略</strong>：<br>JDK 1.7在哈希表装填因子不小于0.5时扩容，容量翻倍。<br>JDK 1.8在数组容量未达到64时，以2倍进行扩容；超过64之后，若链表长度大于7，则将链表转换为红黑树。</li></ul><p>这些变化使得JDK 1.8中的HashMap在处理高并发和大数据量时更加高效和稳定。特别是红黑树的引入，大大提高了插入和查询的效率，减少了时间复杂度。此外，尾插法的使用也避免了JDK 1.7中可能出现的死循环问题。</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>编程语言</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>java</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>C语言思考题</title>
+    <link href="/2024/03/26/C%E8%AF%AD%E8%A8%80%E6%80%9D%E8%80%83%E9%A2%98/"/>
+    <url>/2024/03/26/C%E8%AF%AD%E8%A8%80%E6%80%9D%E8%80%83%E9%A2%98/</url>
+    
+    <content type="html"><![CDATA[<h2 id="思考题一"><a href="#思考题一" class="headerlink" title="思考题一"></a>思考题一</h2><p>c语言中，什么是字节对齐？如何在代码中实现字节对齐？</p><p>在结构体定义中存在字节对齐的问题，这是因为某些早期的CPU架构并不支持奇数地址的访问或者偶数地址访问的速度比奇数地址访问的速度快<br>所以结构体定义的变量开始位置会对齐到偶数的地址上，而关于结构体中每个变量的偏移地址也会进行“对齐”，C语言中默认时4字节对齐<br>也可以对其进行修改</p><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-meta">#<span class="hljs-keyword">pragma</span> pack(N)     <span class="hljs-comment">// N必须2的（0-4）次幂，即为1，2，4，8，16</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">pragma</span> pack()      <span class="hljs-comment">// 恢复之前的字节对齐设置</span></span><br></code></pre></td></tr></table></figure><p>每个变量偏移地址必须为<code>min(N, 结构体变量的大小)</code>的整数倍</p><h3 id="C语言结构体字节对齐规则"><a href="#C语言结构体字节对齐规则" class="headerlink" title="C语言结构体字节对齐规则"></a>C语言结构体字节对齐规则</h3><ul><li><p>规则1 ：结构体（struct）的数据成员，第一个数据成员放在offset为0的地方，以后每个数据成员存放在offset为该数据成员大小的整数倍的地方（比如int在32位机为４字节，则要从4的整数倍地址开始存储）。</p></li><li><p>规则2：如果一个结构体B里嵌套另一个结构体A，则结构体A应从offset为<code>min(A内部最大成员, 对齐字节)</code>的整数倍的地方开始存储。（struct B里存有struct A，A里有char，int，double等成员，那A应该从8的整数倍开始存储。），结构体A中的成员的对齐规则仍满足原则1、原则2。</p><p>  Tips:结构体A所占的大小为该结构体成员内部最大元素的整数倍，不足补齐。而不是直接将结构体A的成员直接移动到结构体B中</p></li><li><p>规则3：结构体的总大小，也就是sizeof的结果，必须是<code>min(内部最大成员的整数倍, 对齐字节)</code>，不足的要补齐。</p></li></ul><h2 id="思考题二"><a href="#思考题二" class="headerlink" title="思考题二"></a>思考题二</h2><p>c语言里面指针函数和函数指针的区别，代码中如何使用？</p><p>指针函数本质上是一个返回指针的函数，仅仅是一个函数，返回类型为指针类型，例如malloc</p><p>函数指针是一个指向函数的指针。它的类型决定了它指向的函数的参数类型和返回类型。函数名本身就可作为函数指针作为其他函数的传入参数，例如 pthread_create 创建线程时就需要一个void <em>(</em>) (void *) 的函数指针作为传入参数</p><h2 id="思考题三"><a href="#思考题三" class="headerlink" title="思考题三"></a>思考题三</h2><p>c语言进程运行过程中，如何使用gdb进行实时调试，获取变量值？如果进程产生core，如何定位core的位置？明确core的具体原因？</p><p>想要调试正在运行的进程，首先你要找到想要调试的进程的进程号，确保该进程编译的时候带-g选项，有调试信息</p><p>例子</p><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;stdio.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;stdlib.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;unistd.h&gt;</span></span><br><br><span class="hljs-comment">// 定义全局变量</span><br><span class="hljs-keyword">volatile</span> <span class="hljs-type">int</span> counter = <span class="hljs-number">0</span>;<br><br><span class="hljs-type">int</span> <span class="hljs-title function_">main</span><span class="hljs-params">()</span><br>&#123;<br>    <span class="hljs-keyword">while</span> (<span class="hljs-number">1</span>)<br>    &#123;<br>        counter++;<br>        sleep(<span class="hljs-number">10</span>);  <span class="hljs-comment">// 每10s加一</span><br>    &#125;<br><br>    <span class="hljs-keyword">return</span> EXIT_SUCCESS;<br>&#125;<br></code></pre></td></tr></table></figure><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs shell">gcc test5.c -o test5 -g -Wall<br>./test5 &amp;   # 后台执行<br> ps -e | grep test5<br><span class="hljs-meta prompt_"># </span><span class="language-bash">输出信息</span><br><span class="hljs-meta prompt_"># </span><span class="language-bash">8453 pts/9    00:00:00 test5</span><br>gdb -p 8453<br>break test5.c:12    # 在源码第12行打断点<br>continue            # 代码继续执行直到下一次遇到断点<br>print counter       # 打印变量<br>detach              # 让程序继续运行，但是不再由GDB控制<br></code></pre></td></tr></table></figure><p>要让C语言程序生成核心转储（core dump）文件，你需要确保系统配置允许生成(ulimit -a)</p><p><img src="./C%E8%AF%AD%E8%A8%80%E6%80%9D%E8%80%83%E9%A2%98/ulimit.png" alt="ulimit"></p><p>例子</p><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;stdio.h&gt;</span></span><br><br><span class="hljs-type">int</span> <span class="hljs-title function_">main</span><span class="hljs-params">()</span><br>&#123;<br>    <span class="hljs-type">int</span> *ptr = <span class="hljs-literal">NULL</span>;<br>    *ptr = <span class="hljs-number">10</span>; <span class="hljs-comment">// 这里会导致段错误</span><br>    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs shell">whc@WHC:~/code/tmp/codeTest/test$ ulimit -c unlimited <br>whc@WHC:~/code/tmp/codeTest/test$ ulimit -c<br>unlimited<br>whc@WHC:~/code/tmp/codeTest/test$ gcc test6.c -o test6 -Wall<br>whc@WHC:~/code/tmp/codeTest/test$ gdb ./test6<br>Segmentation fault (core dumped)<br></code></pre></td></tr></table></figure><p>生成核心转储文件（coredump）通常需要满足以下条件：</p><ul><li>进程必须有足够的权限：通常，只有进程的拥有者或root用户才能生成核心转储文件。</li><li>系统内核参数：&#x2F;proc&#x2F;sys&#x2F;kernel&#x2F;core_pattern 决定了核心转储文件如何命名和存储。默认情况下，生成的核心转储文件可能不会出现在用户目录中。</li></ul><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs shell">whc@WHC:~/code/tmp/codeTest/test$ sudo cat /proc/sys/kernel/core_pattern<br>/mnt/wslg/dumps/core.%e<br>whc@WHC:~/code/tmp/codeTest/test$ ll /mnt/wslg/dumps/<br>total 124<br>drwxrwxrwx 2 root root     60 Mar 26 22:07 ./<br>drwxrwxrwt 8 root root    320 Mar 26 21:21 ../<br>-rw------- 1 whc  whc  307200 Mar 26 22:07 core.test6.23913<br>cd /mnt/wslg/dumps/<br>su<br>gdb /home/whc/code/tmp/codeTest/test/test6 core.test6.23913 <br>bt  # bt命令来查看堆栈跟踪<br></code></pre></td></tr></table></figure><h2 id="在一个函数中char-p-“hello”-与char-p-“hello”-的区别"><a href="#在一个函数中char-p-“hello”-与char-p-“hello”-的区别" class="headerlink" title="在一个函数中char *p &#x3D; “hello”;与char p[] &#x3D; “hello”;的区别"></a>在一个函数中char *p &#x3D; “hello”;与char p[] &#x3D; “hello”;的区别</h2><ul><li><p>char *p &#x3D; “hello”;<br>这是一个指向字符的指针的声明。<br>p 是一个指向常量字符串 “hello” 的指针。<br>“hello” 是一个常量字符串，存储在只读内存区域。<br>你不能通过 p 来修改 “hello” 中的字符，因为它是只读的。<br>例如，p[0] &#x3D; ‘H’; 是非法的，因为这会尝试修改只读内存。</p></li><li><p>char p[] &#x3D; “hello”;<br>这是一个字符数组的声明。<br>p 是一个有 6 个元素的数组，包含字符 ‘h’, ‘e’, ‘l’, ‘l’, ‘o’, 和字符串结束符 ‘\0’。<br>数组 p 存储在堆栈上，是可读写的。<br>你可以通过数组索引来修改数组中的字符，例如 p[0] &#x3D; ‘H’; 是合法的。</p></li></ul><h2 id="int-Func-10-和-int-a-5"><a href="#int-Func-10-和-int-a-5" class="headerlink" title="int(*Func())[10] 和 int (*a[5])()"></a>int(*Func())[10] 和 int (*a[5])()</h2><p>int(*Func())[10]; 这行代码声明了一个函数指针Func。这个函数指针指向的函数返回一个指向包含10个整数的数组的指针。具体来说：</p><p>int(*)[] 表示返回一个指向数组的指针，这个数组的内容类型是int。<br>[10] 表示这个数组有10个整数。<br>所以，Func是一个指向函数的指针，这个函数返回一个整型数组的指针。简而言之，Func是一个函数指针，它指向的函数返回一个整型数组。</p><p>int (*a[5])(); 这行代码声明了一个数组a，这个数组有5个元素，每个元素是一个函数指针。具体来说：</p><p>a[5] 表示这是一个有5个元素的数组。<br>* 表示数组的元素是指针。<br>() 表示这些指针指向的函数。<br>int 表示这些函数返回一个整数。<br>因此，a是一个由5个函数指针组成的数组，每个指针指向一个返回整数类型的函数。</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>编程语言</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>C</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>入职前的学习</title>
+    <link href="/2024/03/22/%E5%85%A5%E8%81%8C%E5%89%8D%E7%9A%84%E5%AD%A6%E4%B9%A0/"/>
+    <url>/2024/03/22/%E5%85%A5%E8%81%8C%E5%89%8D%E7%9A%84%E5%AD%A6%E4%B9%A0/</url>
+    
+    <content type="html"><![CDATA[<h2 id="git"><a href="#git" class="headerlink" title="git"></a>git</h2><p><img src="D:\WHC\blog\source_posts\入职前的学习\git基本配置.png"></p><p><img src="D:\WHC\blog\source_posts\入职前的学习\git基本配置2.png"></p><p><img src="D:\WHC\blog\source_posts\入职前的学习\git基本配置3.png" alt="git基本配置3"></p><p><img src="D:\WHC\blog\source_posts\入职前的学习\git基本配置4.png" alt="git基本配置4"></p><p><img src="D:\WHC\blog\source_posts\入职前的学习\git基本配置5.png" alt="git基本配置5"></p><p><img src="D:\WHC\blog\source_posts\入职前的学习\git基本配置6.png" alt="git基本配置6"></p>]]></content>
+    
+    
+    <categories>
+      
+      <category>技能学习</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>入职培训</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>shell学习</title>
     <link href="/2024/01/13/shell%E5%AD%A6%E4%B9%A0/"/>
     <url>/2024/01/13/shell%E5%AD%A6%E4%B9%A0/</url>
